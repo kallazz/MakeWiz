@@ -1,6 +1,5 @@
 use std::env;
 use std::fs;
-use std::fs::DirEntry;
 use std::process;
 
 const EXTENSIONS: [&str; 4] = ["cpp", "hpp", "c", "h"]; 
@@ -49,7 +48,7 @@ fn extract_names(paths: fs::ReadDir) -> Result<Vec<String>, Box<dyn std::error::
     Ok(names)
 }
 
-fn check_extension(name: &DirEntry) -> bool {
+fn check_extension(name: &fs::DirEntry) -> bool {
     let path = name.path();
     let extension = path.extension();
 
