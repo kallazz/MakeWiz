@@ -41,6 +41,30 @@ impl Files {
     fn sort_header_files(&mut self) {
         self.headers.sort()
     }
+
+    pub fn generate_output_files(&self) -> Vec<String> {
+        let mut output_files: Vec<String> = Vec::new();
+
+        for source_file in &self.sources {
+            let name_len = source_file.len();
+            if &source_file[name_len - 2..] == ".c" {
+                //.c file
+                let mut new_file = source_file.clone();
+                new_file.truncate(name_len - 2);
+                new_file.push_str(".o");
+                output_files.push(new_file)
+            }
+            else {
+                //.cpp file
+                let mut new_file = source_file.clone();
+                new_file.truncate(name_len - 4);
+                new_file.push_str(".o");
+                output_files.push(new_file)
+            }
+        }
+
+        output_files
+    }
 }
 
 enum FileType {
@@ -160,7 +184,7 @@ mod tests {
     }
 
     #[test]
-    fn files_struct_executable_given() {
+    fn files_struct_set_executable_file() {
         let expected = Files {
             sources: vec![],
             headers: vec![],
@@ -170,5 +194,23 @@ mod tests {
         result.set_executable_file(String::from("Name"));
 
         assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn files_struct_generate_output_files() {
+        let c_files = Files {
+            sources: vec!["main.c".to_string(), "someClass.c".to_string(), "anotherClass.c".to_string()],
+            headers: vec![],
+            executable: String::new()
+        };
+        let cpp_files = Files {
+            sources: vec!["main.cpp".to_string(), "someClass.cpp".to_string(), "anotherClass.cpp".to_string()],
+            headers: vec![],
+            executable: String::new()
+        };
+        let expected = vec!["main.o".to_string(), "someClass.o".to_string(), "anotherClass.o".to_string()];
+
+        assert_eq!(expected, c_files.generate_output_files());
+        assert_eq!(expected, cpp_files.generate_output_files());
     }
 }
