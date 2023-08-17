@@ -1,6 +1,9 @@
 use std::env;
 use std::fs;
+use std::fs::DirEntry;
 use std::process;
+
+const EXTENSIONS: [&str; 4] = ["cpp", "hpp", "c", "h"]; 
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -15,7 +18,7 @@ fn main() {
         process::exit(1);
     });
 
-    let files: Vec<String> = paths_to_file_names(paths_to_files).unwrap_or_else(|err| {
+    let file_names = extract_names(paths_to_files).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -32,14 +35,26 @@ fn parse_arguments(args: &Vec<String>) -> Result<&str, &str> {
     Ok(executable_name)
 }
 
-fn paths_to_file_names(file_paths: fs::ReadDir) -> Result<Vec<String>, Box<dyn std::error::Error>>{
-    let mut file_names = Vec::new();
+fn extract_names(paths: fs::ReadDir) -> Result<Vec<String>, Box<dyn std::error::Error>>{
+    let mut names: Vec<String> = Vec::new();
 
-    for entry in file_paths {
-        if let Some(file_name) = entry?.file_name().to_str() {
-            file_names.push(file_name.to_string());
+    for path_result in paths {
+        let path = path_result?;
+        if check_extension(&path) {
+            let name = path.path().file_name().unwrap().to_str().unwrap().to_string();
+            names.push(name);
         }
     }
 
-    Ok(file_names)
+    Ok(names)
+}
+
+fn check_extension(name: &DirEntry) -> bool {
+    let path = name.path();
+    let extension = path.extension();
+
+    match extension {
+        Some(ext) => EXTENSIONS.contains(&ext.to_str().unwrap()),
+        None => false
+    }
 }
