@@ -75,7 +75,7 @@ mod tests {
 
     #[test]
     fn extract_names_correct_files_without_folders() {
-        let paths = fs::read_dir("./test-dirs/standard-with-folders").unwrap();
+        let paths = fs::read_dir("./test-dirs/standard-without-folders").unwrap();
         let expected_vec: Vec<String> = vec![String::from("cpp_header.hpp"), 
             String::from("c_header.h"), String::from("cpp_source.cpp"), String::from("c_source.c")];
         let result_vec = extract_names(paths).unwrap();
