@@ -11,7 +11,8 @@ pub struct FileNames {
     sources: Vec<String>,
     objects: Vec<String>,
     headers: Vec<String>,
-    executable: String
+    executable: String,
+    compiler: String,
 }
 
 impl FileNames {
@@ -20,7 +21,8 @@ impl FileNames {
             sources: Vec::new(),
             objects: Vec::new(),
             headers: Vec::new(),
-            executable: String::new()
+            executable: String::new(),
+            compiler: String::new(),
         }
     }
 
@@ -33,8 +35,12 @@ impl FileNames {
         self.headers.push(name)
     }
 
-    pub fn set_executable_file(&mut self, name: String) {
-        self.executable = name;
+    pub fn set_executable(&mut self, name: &str) {
+        self.executable = name.to_string();
+    }
+
+    pub fn set_compiler(&mut self, name: &str) {
+        self.compiler = name.to_string();
     }
 
     //Getters
@@ -52,6 +58,10 @@ impl FileNames {
 
     pub fn get_executable(&self) -> &str {
         &self.executable
+    }
+
+    pub fn get_compiler(&self) -> &str {
+        &self.compiler
     }
 
     fn sort_source_files(&mut self) {
@@ -161,7 +171,8 @@ mod test {
             sources: vec![String::from("c_source.c"), String::from("cpp_source.cpp")],
             objects: vec![String::from("c_source.o"), String::from("cpp_source.o")],
             headers: vec![String::from("c_header.h"), String::from("cpp_header.hpp")],
-            executable: String::new()
+            executable: String::new(),
+            compiler: String::new()
         };
         let result = FileNames::extract_names(paths).unwrap();
 
@@ -175,23 +186,10 @@ mod test {
             sources: vec![String::from("c_source.c"), String::from("cpp_source.cpp")],
             objects: vec![String::from("c_source.o"), String::from("cpp_source.o")],
             headers: vec![String::from("c_header.h"), String::from("cpp_header.hpp")],
-            executable: String::new()
+            executable: String::new(),
+            compiler: String::new()
         };
         let result = FileNames::extract_names(paths).unwrap();
-
-        assert_eq!(expected, result);
-    }
-
-    #[test]
-    fn files_struct_set_executable_file() {
-        let expected = FileNames {
-            sources: vec![],
-            objects: vec![],
-            headers: vec![],
-            executable: String::from("Name")
-        };
-        let mut result = FileNames::new();
-        result.set_executable_file(String::from("Name"));
 
         assert_eq!(expected, result);
     }

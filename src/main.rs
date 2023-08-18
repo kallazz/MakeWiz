@@ -9,7 +9,7 @@ use std::process;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let executable = args::parse_arguments(&args).unwrap_or_else(|err| {
+    let (executable, compiler) = args::parse_arguments(&args).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -24,7 +24,8 @@ fn main() {
         process::exit(1);
     });
 
-    file_names.set_executable_file(executable.to_string());
+    file_names.set_executable(executable);
+    file_names.set_compiler(compiler);
 
     //Creating the makefile
     let makefile = make::Makefile::create(&file_names);

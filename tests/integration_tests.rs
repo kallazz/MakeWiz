@@ -1,3 +1,4 @@
+use genmake::args;
 use genmake::make;
 use genmake::files;
 
@@ -5,10 +6,15 @@ use std::fs;
 
 #[test]
 fn makefile_creation() {
+    let args = vec![String::from("target/debug/genmake"), 
+        String::from("executable"), String::from("compiler")];
+    let (executable, compiler) = args::parse_arguments(&args).unwrap();
+
     let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
     let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
-    file_names.set_executable_file("main".to_string());
+    file_names.set_executable(executable);
+    file_names.set_compiler(compiler);
 
     let makefile = make::Makefile::create(&file_names);
 
@@ -16,8 +22,8 @@ fn makefile_creation() {
 OBJS = AnotherClass.o SomeClass.o main.o
 SOURCE = AnotherClass.cpp SomeClass.cpp main.cpp
 HEADER = AnotherClass.hpp SomeClass.hpp SomeHeader.hpp
-OUT = main
-CC = g++
+OUT = executable
+CC = compiler
 FLAGS = -g -c -Wall
 LFLAGS = 
 

@@ -17,7 +17,7 @@ impl Makefile {
         makefile.add_multiple("SOURCE", file_names.get_sources());
         makefile.add_multiple("HEADER", file_names.get_headers());
         makefile.add_one("OUT", file_names.get_executable());
-        makefile.add_one("CC", "g++"); //For now
+        makefile.add_one("CC", file_names.get_compiler()); //For now
         makefile.add_multiple("FLAGS", &vec!["-g".to_string(), "-c".to_string(), "-Wall".to_string(),]);
         makefile.add_one("LFLAGS", "");
 

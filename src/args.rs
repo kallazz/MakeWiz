@@ -1,12 +1,18 @@
-pub fn parse_arguments(args: &Vec<String>) -> Result<&str, &str> {
-    if args.len() == 1 {
-        return Ok("main");
+pub fn parse_arguments(args: &Vec<String>) -> Result<(&str, &str), &str> {
+    let mut executable = "main";
+    let mut compiler = "g++";
+
+    if args.len() >= 2 {
+        executable = &args[1];
     }
-    //Flags will be added later
+    if args.len() == 3 {
+        compiler = &args[2];
+    }
+    if args.len() > 3 {
+        return Err("Too many arguments");
+    }
 
-    let executable_name = &args[1];
-
-    Ok(executable_name)
+    Ok((executable, compiler))
 }
 
 #[cfg(test)]
@@ -14,14 +20,16 @@ mod test {
     use super::*;
 
     #[test]
-    fn no_arguments() {
-        let args: Vec<String> = vec![String::from("target/debug/genmake")];
-        assert_eq!(Err("Not enough arguments"), parse_arguments(&args));
+    fn one_argument() {
+        let args: Vec<String> = vec![String::from("target/debug/genmake"), 
+            String::from("executable")];
+        assert_eq!(Ok(("executable", "g++")), parse_arguments(&args));
     }
 
     #[test]
-    fn one_argument() {
-        let args: Vec<String> = vec![String::from("target/debug/genmake"), String::from("filename")];
-        assert_eq!(Ok("filename"), parse_arguments(&args));
+    fn two_arguments() {
+        let args: Vec<String> = vec![String::from("target/debug/genmake"), 
+            String::from("executable"), String::from("compiler")];
+        assert_eq!(Ok(("executable", "compiler")), parse_arguments(&args));
     }
 }
