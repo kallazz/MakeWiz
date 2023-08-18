@@ -1,3 +1,4 @@
+use crate::files::FileNames;
 
 pub struct Makefile {
     file: String
@@ -10,10 +11,28 @@ impl Makefile {
         }
     }
 
-    pub fn add_multiple(&mut self, file_type: String, items: &Vec<String>) {
-        let mut new_line = file_type;
+    pub fn create(file_names: &FileNames) -> Makefile {
+        let mut makefile = Makefile::new();
+        makefile.add_multiple("OBJS", file_names.get_objects());
+        makefile.add_multiple("SOURCE", file_names.get_sources());
+        makefile.add_multiple("HEADER", file_names.get_headers());
+        makefile.add_one("OUT", file_names.get_executable());
+        makefile.add_one("CC", "g++"); //For now
+        makefile.add_multiple("FLAGS", &vec!["-g".to_string(), "-c".to_string(), "-Wall".to_string(),]);
+        makefile.add_one("LFLAGS", "");
+
+        makefile.add_all();
+        makefile.add_execution(file_names.get_objects(), file_names.get_sources());
+
+        makefile.add_clean();
+
+        makefile
+    }
+
+    fn add_multiple(&mut self, file_type: &str, items: &Vec<String>) {
+        let mut new_line = file_type.to_string();
         new_line.push_str(" =");
-        
+
         for item in items {
             new_line.push(' ');
             new_line.push_str(item);
@@ -23,8 +42,8 @@ impl Makefile {
         self.file.push_str(&new_line);
     }
 
-    pub fn add_one(&mut self, file_type: String, item: String) {
-        let mut new_line = file_type;
+    fn add_one(&mut self, file_type: &str, item: &str) {
+        let mut new_line = file_type.to_string();
         new_line.push_str(" = ");
         new_line.push_str(&item);
 
@@ -33,14 +52,14 @@ impl Makefile {
         self.file.push_str(&new_line);
     }
 
-    pub fn add_all(&mut self) {
+    fn add_all(&mut self) {
         let mut new_line = "\nall: $(OBJS)\n".to_string();
         new_line.push_str("  $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n");
 
         self.file.push_str(&new_line);
     }
 
-    pub fn add_execution(&mut self, object_files: &Vec<String>, source_files: &Vec<String>) {
+    fn add_execution(&mut self, object_files: &Vec<String>, source_files: &Vec<String>) {
         let size = object_files.len();
 
         for i in 0..size {
@@ -58,13 +77,13 @@ impl Makefile {
         }
     }
 
-    pub fn add_clean(&mut self) {
+    fn add_clean(&mut self) {
         let new_line = "\n\nclean:\n  rm -f $(OBJS) $(OUT)\n";
 
         self.file.push_str(new_line);
     }
 
-    pub fn get_file(&self) -> &str {
+    fn get_file(&self) -> &str {
         &self.file
     }
 }
@@ -79,8 +98,8 @@ mod test {
         let object_files = vec!["main.o".to_string(), "file.o".to_string(), "Car.o".to_string(), "Plane.o".to_string()];
         let source_files = vec!["main.c".to_string(), "file.c".to_string(), "Car.cpp".to_string(), "Plane.cpp".to_string()];
 
-        makefile.add_multiple("OBJS".to_string(), &object_files);
-        makefile.add_multiple("SOURCE".to_string(), &source_files);
+        makefile.add_multiple("OBJS", &object_files);
+        makefile.add_multiple("SOURCE", &source_files);
 
         let expected = "OBJS = main.o file.o Car.o Plane.o\n\
             SOURCE = main.c file.c Car.cpp Plane.cpp\n";
@@ -94,8 +113,8 @@ mod test {
         let executable = "main".to_string();
         let compiler = "g++".to_string(); 
 
-        makefile.add_one("OUT".to_string(), executable);
-        makefile.add_one("CC".to_string(), compiler);
+        makefile.add_one("OUT", &executable);
+        makefile.add_one("CC", &compiler);
 
         let expected = "OUT = main\n\
             CC = g++\n";

@@ -50,6 +50,10 @@ impl FileNames {
         &self.headers
     }
 
+    pub fn get_executable(&self) -> &str {
+        &self.executable
+    }
+
     fn sort_source_files(&mut self) {
         self.sources.sort()
     }
