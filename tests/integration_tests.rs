@@ -28,20 +28,20 @@ FLAGS = -g -c -Wall
 LFLAGS = 
 
 all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+    $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 AnotherClass.o: AnotherClass.cpp
-	$(CC) $(FLAGS) AnotherClass.cpp
+    $(CC) $(FLAGS) AnotherClass.cpp
 
 SomeClass.o: SomeClass.cpp
-	$(CC) $(FLAGS) SomeClass.cpp
+    $(CC) $(FLAGS) SomeClass.cpp
 
 main.o: main.cpp
-	$(CC) $(FLAGS) main.cpp
+    $(CC) $(FLAGS) main.cpp
 
 
 clean:
-	rm -f $(OBJS) $(OUT)\n";
+    rm -f $(OBJS) $(OUT)\n";
 
     assert_eq!(expected, makefile.get_file());
 }
