@@ -1,4 +1,4 @@
-mod files_and_strings;
+mod files_handling;
 mod makefiles;
 
 use std::env;
@@ -8,7 +8,7 @@ use std::process;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let executable = files_and_strings::parse_arguments(&args).unwrap_or_else(|err| {
+    let executable = files_handling::parse_arguments(&args).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -18,7 +18,7 @@ fn main() {
         process::exit(1);
     });
 
-    let mut file_names = files_and_strings::extract_names(paths_to_files).unwrap_or_else(|err| {
+    let mut file_names = files_handling::FileNames::extract_names(paths_to_files).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -27,6 +27,7 @@ fn main() {
 
     //Creating the makefile
     let mut makefile = makefiles::Makefile::new();
-    makefile.add_objs(&file_names);
-    makefile.print();
+    makefile.add_line("OBJS".to_string(), file_names.get_objects());
+    makefile.add_line("SOURCE".to_string(), file_names.get_sources());
+    makefile.add_line("HEADER".to_string(), file_names.get_headers());
 }

@@ -1,4 +1,3 @@
-use crate::files_and_strings::Files;
 
 pub struct Makefile {
     file: String
@@ -11,24 +10,40 @@ impl Makefile {
         }
     }
 
-    pub fn add_text(&mut self, text: &str) {
-        self.file.push_str(text);
-    }
-
-    pub fn add_objs(&mut self, files: &Files) {
-        let mut objs = "OBJS =".to_string();
-        let output_files = files.generate_output_files();
-
-        for file in output_files {
-            objs.push(' ');
-            objs.push_str(&file);
+    pub fn add_line(&mut self, file_type: String, files: &Vec<String>) {
+        let mut new_line = file_type;
+        new_line.push_str(" =");
+        
+        for file in files {
+            new_line.push(' ');
+            new_line.push_str(file);
         }
-        objs.push('\n');
+        new_line.push('\n');
 
-        self.add_text(&objs);
+        self.file.push_str(&new_line);
     }
 
-    pub fn print(&self) {
-        println!("{}", self.file);
+    pub fn get_file(&self) -> &str {
+        &self.file
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn adding_lines() {
+        let mut makefile = Makefile::new();
+        let object_files = vec!["main.o".to_string(), "file.o".to_string(), "Car.o".to_string(), "Plane.o".to_string()];
+        let source_files = vec!["main.c".to_string(), "file.c".to_string(), "Car.cpp".to_string(), "Plane.cpp".to_string()];
+
+        makefile.add_line("OBJS".to_string(), &object_files);
+        makefile.add_line("SOURCE".to_string(), &source_files);
+
+        let expected = "OBJS = main.o file.o Car.o Plane.o\n\
+            SOURCE = main.c file.c Car.cpp Plane.cpp\n";
+
+        assert_eq!(expected, makefile.get_file());
     }
 }
