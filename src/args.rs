@@ -1,6 +1,6 @@
 pub fn parse_arguments(args: &Vec<String>) -> Result<&str, &str> {
-    if args.len() < 2 {
-        return Err("Not enough arguments");
+    if args.len() == 1 {
+        return Ok("main");
     }
     //Flags will be added later
 
