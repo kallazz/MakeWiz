@@ -1,6 +1,6 @@
-mod files_handling;
-mod makefiles;
 mod args;
+mod make;
+mod files;
 
 use std::env;
 use std::fs;
@@ -19,7 +19,7 @@ fn main() {
         process::exit(1);
     });
 
-    let mut file_names = files_handling::FileNames::extract_names(paths_to_files).unwrap_or_else(|err| {
+    let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -27,7 +27,7 @@ fn main() {
     file_names.set_executable_file(executable.to_string());
 
     //Creating the makefile
-    let mut makefile = makefiles::Makefile::new();
+    let mut makefile = make::Makefile::new();
     makefile.add_line("OBJS".to_string(), file_names.get_objects());
     makefile.add_line("SOURCE".to_string(), file_names.get_sources());
     makefile.add_line("HEADER".to_string(), file_names.get_headers());
