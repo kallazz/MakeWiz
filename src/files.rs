@@ -138,7 +138,7 @@ mod test {
     #[test]
     #[ignore = "empty directory can't be added to git"]
     fn extract_names_no_files() {
-        let paths = fs::read_dir("./test-dirs/empty").unwrap();
+        let paths = fs::read_dir("./test-dirs/test-extracting-filenames/empty").unwrap();
         let expected = FileNames::new();
         let result = FileNames::extract_names(paths).unwrap();
 
@@ -147,7 +147,7 @@ mod test {
 
     #[test]
     fn extract_names_no_correct_files() {
-        let paths = fs::read_dir("./test-dirs/no-correct-files").unwrap();
+        let paths = fs::read_dir("./test-dirs/test-extracting-filenames/no-correct-files").unwrap();
         let expected = FileNames::new();
         let result = FileNames::extract_names(paths).unwrap();
 
@@ -156,7 +156,7 @@ mod test {
 
     #[test]
     fn extract_names_correct_files_without_folders() {
-        let paths = fs::read_dir("./test-dirs/standard-without-folders").unwrap();
+        let paths = fs::read_dir("./test-dirs/test-extracting-filenames/standard-without-folders").unwrap();
         let expected = FileNames {
             sources: vec![String::from("c_source.c"), String::from("cpp_source.cpp")],
             objects: vec![String::from("c_source.o"), String::from("cpp_source.o")],
@@ -170,7 +170,7 @@ mod test {
 
     #[test]
     fn extract_names_correct_files_with_folders() {
-        let paths = fs::read_dir("./test-dirs/standard-with-folders").unwrap();
+        let paths = fs::read_dir("./test-dirs/test-extracting-filenames/standard-with-folders").unwrap();
         let expected = FileNames {
             sources: vec![String::from("c_source.c"), String::from("cpp_source.cpp")],
             objects: vec![String::from("c_source.o"), String::from("cpp_source.o")],

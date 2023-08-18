@@ -27,4 +27,8 @@ fn main() {
     file_names.set_executable_file(executable.to_string());
 
     //Creating the makefile
+    let makefile = make::Makefile::create(&file_names);
+
+    fs::write("./Makefile", makefile.get_file()).expect("Unable to create a Makefile");
+    println!("Makefile successfully created");
 }
