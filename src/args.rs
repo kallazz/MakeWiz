@@ -10,7 +10,7 @@ pub fn parse_arguments(args: &Vec<String>) -> Result<&str, &str> {
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
     use super::*;
 
     #[test]

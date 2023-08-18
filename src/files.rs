@@ -128,10 +128,11 @@ impl FileType {
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
     use super::*;
 
     #[test]
+    #[ignore = "empty directory can't be added to git"]
     fn extract_names_no_files() {
         let paths = fs::read_dir("./test-dirs/empty").unwrap();
         let expected = FileNames::new();
