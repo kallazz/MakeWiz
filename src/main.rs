@@ -1,5 +1,6 @@
 mod files_handling;
 mod makefiles;
+mod args;
 
 use std::env;
 use std::fs;
@@ -8,7 +9,7 @@ use std::process;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let executable = files_handling::parse_arguments(&args).unwrap_or_else(|err| {
+    let executable = args::parse_arguments(&args).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
