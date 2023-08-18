@@ -1,6 +1,6 @@
-mod args;
-mod make;
-mod files;
+use genmake::args;
+use genmake::make;
+use genmake::files;
 
 use std::env;
 use std::fs;
