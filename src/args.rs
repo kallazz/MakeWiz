@@ -1,35 +1,41 @@
-pub fn parse_arguments(args: &Vec<String>) -> Result<(&str, &str), &str> {
-    let mut executable = "main";
-    let mut compiler = "g++";
+use clap::{Parser, Subcommand, Args};
 
-    if args.len() >= 2 {
-        executable = &args[1];
-    }
-    if args.len() == 3 {
-        compiler = &args[2];
-    }
-    if args.len() > 3 {
-        return Err("Too many arguments");
-    }
+#[derive(Parser)]
+#[command(author, version, about)]
+pub struct GenmakeArgs {
+    #[command(subcommand)]
+    pub command: Option<Commands>,
 
-    Ok((executable, compiler))
+    /// Set the executable name for THIS Makefile
+    #[arg(short, long, value_name = "EXECUTABLE_NAME")]
+    pub executable: Option<String>,
+
+    /// Set the compiler name for THIS Makefile
+    #[arg(short, long, value_name = "COMPILER_NAME")]
+    pub compiler: Option<String>,
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
+#[derive(Subcommand)]
+pub enum Commands {
+    /// Set the executable name PERMANENTLY
+    SetExecutable(NameArgument),
 
-    #[test]
-    fn one_argument() {
-        let args: Vec<String> = vec![String::from("target/debug/genmake"), 
-            String::from("executable")];
-        assert_eq!(Ok(("executable", "g++")), parse_arguments(&args));
+    /// Set the compiler name PERMANENTLY
+    SetCompiler(NameArgument),
+}
+
+#[derive(Args)]
+#[group(required = true)]
+pub struct NameArgument {
+    pub name: String,
+}
+
+impl GenmakeArgs {
+    pub fn subcommands_provided(&self) -> bool {
+        self.command.is_some()
     }
 
-    #[test]
-    fn two_arguments() {
-        let args: Vec<String> = vec![String::from("target/debug/genmake"), 
-            String::from("executable"), String::from("compiler")];
-        assert_eq!(Ok(("executable", "compiler")), parse_arguments(&args));
+    pub fn flags_provided(&self) -> bool {
+        self.executable.is_some() || self.compiler.is_some()
     }
 }

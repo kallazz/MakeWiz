@@ -3,18 +3,20 @@ use genmake::make;
 use genmake::files;
 
 use std::fs;
+use clap::Parser;
 
 #[test]
 fn makefile_creation() {
-    let args = vec![String::from("target/debug/genmake"), 
-        String::from("executable"), String::from("compiler")];
-    let (executable, compiler) = args::parse_arguments(&args).unwrap();
-
     let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
     let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
-    file_names.set_executable(executable);
-    file_names.set_compiler(compiler);
+
+    let args = vec![String::from("target/debug/genmake"), String::from("-e"),
+        String::from("executable"), String::from("-c"), String::from("compiler")];
+
+    let parsed_args = args::GenmakeArgs::parse_from(args);
+    file_names.set_executable(parsed_args.executable.unwrap());
+    file_names.set_compiler(parsed_args.compiler.unwrap());
 
     let makefile = make::Makefile::create(&file_names);
 

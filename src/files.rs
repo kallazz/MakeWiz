@@ -35,12 +35,12 @@ impl FileNames {
         self.headers.push(name)
     }
 
-    pub fn set_executable(&mut self, name: &str) {
-        self.executable = name.to_string();
+    pub fn set_executable(&mut self, name: String) {
+        self.executable = name;
     }
 
-    pub fn set_compiler(&mut self, name: &str) {
-        self.compiler = name.to_string();
+    pub fn set_compiler(&mut self, name: String) {
+        self.compiler = name;
     }
 
     //Getters
