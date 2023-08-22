@@ -8,11 +8,11 @@ const HEADER_EXTENSIONS: [&str; 2] = ["h", "hpp"];
 #[derive(PartialEq)]
 #[derive(Debug)]
 pub struct FileNames {
-    sources: Vec<String>,
-    objects: Vec<String>,
-    headers: Vec<String>,
-    executable: String,
-    compiler: String,
+    pub sources: Vec<String>,
+    pub objects: Vec<String>,
+    pub headers: Vec<String>,
+    pub executable: String,
+    pub compiler: String,
 }
 
 impl FileNames {
@@ -26,42 +26,12 @@ impl FileNames {
         }
     }
 
-    //Setters
     fn add_source_file(&mut self, name: String) {
         self.sources.push(name)
     }
 
     fn add_header_file(&mut self, name: String) {
         self.headers.push(name)
-    }
-
-    pub fn set_executable(&mut self, name: String) {
-        self.executable = name;
-    }
-
-    pub fn set_compiler(&mut self, name: String) {
-        self.compiler = name;
-    }
-
-    //Getters
-    pub fn get_sources(&self) -> &Vec<String> {
-        &self.sources
-    }
-
-    pub fn get_objects(&self) -> &Vec<String> {
-        &self.objects
-    }
-
-    pub fn get_headers(&self) -> &Vec<String> {
-        &self.headers
-    }
-
-    pub fn get_executable(&self) -> &str {
-        &self.executable
-    }
-
-    pub fn get_compiler(&self) -> &str {
-        &self.compiler
     }
 
     fn sort_source_files(&mut self) {

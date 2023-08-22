@@ -15,8 +15,8 @@ fn makefile_creation() {
         String::from("executable"), String::from("-c"), String::from("compiler")];
 
     let parsed_args = args::GenmakeArgs::parse_from(args);
-    file_names.set_executable(parsed_args.executable.unwrap());
-    file_names.set_compiler(parsed_args.compiler.unwrap());
+    file_names.executable = parsed_args.executable.unwrap();
+    file_names.compiler = parsed_args.compiler.unwrap();
 
     let makefile = make::Makefile::create(&file_names);
 

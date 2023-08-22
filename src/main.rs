@@ -29,11 +29,11 @@ fn main() {
 
     //Handling flags
     if let Some(executable) = args.executable {
-        file_names.set_executable(executable);
+        file_names.executable = executable;
     }
 
     if let Some(compiler) = args.compiler {
-        file_names.set_compiler(compiler);
+        file_names.compiler = compiler;
     }
 
     //Handling subcommands

@@ -13,16 +13,16 @@ impl Makefile {
 
     pub fn create(file_names: &FileNames) -> Makefile {
         let mut makefile = Makefile::new();
-        makefile.add_multiple("OBJS", file_names.get_objects());
-        makefile.add_multiple("SOURCE", file_names.get_sources());
-        makefile.add_multiple("HEADER", file_names.get_headers());
-        makefile.add_one("OUT", file_names.get_executable());
-        makefile.add_one("CC", file_names.get_compiler()); //For now
+        makefile.add_multiple("OBJS", &file_names.objects);
+        makefile.add_multiple("SOURCE", &file_names.sources);
+        makefile.add_multiple("HEADER", &file_names.headers);
+        makefile.add_one("OUT", &file_names.executable);
+        makefile.add_one("CC", &file_names.compiler);
         makefile.add_multiple("FLAGS", &vec!["-g".to_string(), "-c".to_string(), "-Wall".to_string(),]);
         makefile.add_one("LFLAGS", "");
 
         makefile.add_all();
-        makefile.add_execution(file_names.get_objects(), file_names.get_sources());
+        makefile.add_execution(&file_names.objects, &file_names.sources);
 
         makefile.add_clean();
 
