@@ -1,5 +1,4 @@
 use clap::{Parser, Subcommand, Args};
-use std::env;
 
 #[derive(Parser)]
 #[command(author, version, about)]
@@ -41,11 +40,5 @@ impl GenmakeArgs {
 
     pub fn flags_provided(&self) -> bool {
         self.executable.is_some() || self.compiler.is_some()
-    }
-}
-
-pub fn set_default_env_var(key: &str, default_value: &str) {
-    if std::env::var(key).is_err() {
-        std::env::set_var(key, default_value);
     }
 }

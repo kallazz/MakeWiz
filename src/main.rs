@@ -1,13 +1,13 @@
 use genmake::args;
-use genmake::args::set_default_env_var;
 use genmake::make;
 use genmake::files;
+use genmake::defaults;
 
 use args::Commands;
+use defaults::Config;
 use clap::Parser;
 use std::fs;
 use std::process;
-use std::env;
 
 fn main() {
     let paths_to_files = fs::read_dir(".").unwrap_or_else(|err| {
@@ -20,14 +20,12 @@ fn main() {
         process::exit(1);
     });
 
-    //Set default values for env variables if they are empty
-    set_default_env_var("COMPILER", "g++");
-    set_default_env_var("EXECUTABLE", "main");
+    //Initialize config
+    Config::init_config();
+    file_names.compiler = Config::get_current_compiler();
+    file_names.executable = Config::get_current_executable();
 
-    file_names.compiler = env::var("COMPILER").unwrap();
-    file_names.executable = env::var("EXECUTABLE").unwrap();
-
-    //User arguments
+    //Get user arguments
     let args = args::GenmakeArgs::parse();
 
     // Check if both subcommand and flags are provided
@@ -36,7 +34,7 @@ fn main() {
         std::process::exit(1);
     }
 
-    //Handling flags
+    //Handle flags
     if let Some(executable) = &args.executable {
         file_names.executable = executable.clone();
     }
@@ -45,22 +43,20 @@ fn main() {
         file_names.compiler = compiler.clone();
     }
 
-    //Handling subcommands
+    //Handle subcommands
     match &args.command {
         Some(command) => match command {
             Commands::SetCompiler(compiler) => {
-                env::set_var("COMPILER", compiler.name.clone());
-                file_names.compiler = env::var("COMPILER").unwrap();
+                Config::update_compiler(&compiler.name);
             },
 
             Commands::SetExecutable(executable) => {
-                env::set_var("EXECUTABLE", executable.name.clone());
-                file_names.executable = env::var("EXECUTABLE").unwrap();
+                Config::update_executable(&executable.name);
             },
 
             Commands::Default => {
-                println!("Default compiler name: {}", env::var("COMPILER").unwrap());
-                println!("Default executable name: {}", env::var("EXECUTABLE").unwrap());
+                println!("Default compiler name: {}", Config::get_current_compiler());
+                println!("Default executable name: {}", Config::get_current_executable());
             }
         },
         None => { }
