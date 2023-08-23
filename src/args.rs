@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand, Args};
+use std::env;
 
 #[derive(Parser)]
 #[command(author, version, about)]
@@ -17,11 +18,14 @@ pub struct GenmakeArgs {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Set the executable name PERMANENTLY
+    /// Set the default compiler name
+    SetCompiler(NameArgument),
+
+    /// Set the default executable name
     SetExecutable(NameArgument),
 
-    /// Set the compiler name PERMANENTLY
-    SetCompiler(NameArgument),
+    /// Show default values
+    Default,
 }
 
 #[derive(Args)]
@@ -37,5 +41,11 @@ impl GenmakeArgs {
 
     pub fn flags_provided(&self) -> bool {
         self.executable.is_some() || self.compiler.is_some()
+    }
+}
+
+pub fn set_default_env_var(key: &str, default_value: &str) {
+    if std::env::var(key).is_err() {
+        std::env::set_var(key, default_value);
     }
 }
