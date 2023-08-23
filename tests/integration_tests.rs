@@ -2,25 +2,29 @@ use genmake::args;
 use genmake::make;
 use genmake::files;
 
-use std::fs;
-use clap::Parser;
+#[cfg(test)]
+mod test {
+    use super::*;
 
-#[test]
-fn makefile_creation() {
-    let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
+    use std::fs;
+    use clap::Parser;
 
-    let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
+    #[test]
+    fn makefile_creation() {
+        let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
-    let args = vec![String::from("target/debug/genmake"), String::from("-e"),
-        String::from("executable"), String::from("-c"), String::from("compiler")];
+        let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
 
-    let parsed_args = args::GenmakeArgs::parse_from(args);
-    file_names.executable = parsed_args.executable.unwrap();
-    file_names.compiler = parsed_args.compiler.unwrap();
+        let args = vec![String::from("target/debug/genmake"), String::from("-e"),
+            String::from("executable"), String::from("-c"), String::from("compiler")];
 
-    let makefile = make::Makefile::create(&file_names);
+        let parsed_args = args::GenmakeArgs::parse_from(args);
+        file_names.executable = parsed_args.executable.unwrap();
+        file_names.compiler = parsed_args.compiler.unwrap();
 
-    let expected = "\
+        let makefile = make::Makefile::create(&file_names);
+
+        let expected = "\
 OBJS = AnotherClass.o SomeClass.o main.o
 SOURCE = AnotherClass.cpp SomeClass.cpp main.cpp
 HEADER = AnotherClass.hpp SomeClass.hpp SomeHeader.hpp
@@ -45,5 +49,6 @@ main.o: main.cpp
 clean:
     rm -f $(OBJS) $(OUT)\n";
 
-    assert_eq!(expected, makefile.get_file());
+        assert_eq!(expected, makefile.get_file());
+    }
 }

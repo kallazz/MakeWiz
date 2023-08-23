@@ -1,36 +1,41 @@
 use genmake::defaults::Config;
 
-use std::env;
-use std::path::PathBuf;
-use std::fs;
+#[cfg(test)]
+mod test {
+    use super::*;
 
-#[test]
-fn all_config_testing() {
-    let testing_dir = PathBuf::from("./test-dirs/test-config/");
-    env::set_current_dir(&testing_dir).unwrap();
+    use std::env;
+    use std::path::PathBuf;
+    use std::fs;
 
-    //Set default config
-    Config::init_config();
+    #[test]
+    fn all_config_testing() {
+        let testing_dir = PathBuf::from("./test-dirs/test-config/");
+        env::set_current_dir(&testing_dir).unwrap();
 
-    let config = Config::get_current_config();
+        //Set default config
+        Config::init_config();
 
-    let expected_config = Config {
-        compiler_name: "g++".to_string(),
-        executable_name: "main".to_string()
-    };
+        let config = Config::get_current_config();
 
-    assert_eq!(expected_config, config);
+        let expected_config = Config {
+            compiler_name: "g++".to_string(),
+            executable_name: "main".to_string()
+        };
 
-    //Update default config
-    let new_config = Config {
-        executable_name: "new executable name".to_string(),
-        compiler_name: "new compiler name".to_string(),
-    };
+        assert_eq!(expected_config, config);
 
-    Config::update_compiler(&new_config.compiler_name);
-    Config::update_executable(&new_config.executable_name);
+        //Update default config
+        let new_config = Config {
+            executable_name: "new executable name".to_string(),
+            compiler_name: "new compiler name".to_string(),
+        };
 
-    assert_eq!(new_config, Config::get_current_config());
+        Config::update_compiler(&new_config.compiler_name);
+        Config::update_executable(&new_config.executable_name);
 
-    fs::remove_file("config.toml").unwrap();
+        assert_eq!(new_config, Config::get_current_config());
+
+        fs::remove_file("config.toml").unwrap();
+    }
 }
