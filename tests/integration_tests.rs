@@ -2,7 +2,6 @@ use genmake::args;
 use genmake::make;
 use genmake::files;
 
-#[cfg(test)]
 mod test {
     use super::*;
 

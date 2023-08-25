@@ -1,6 +1,6 @@
 [package]
 name = "genmake"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Michał Kallas"]
 description = "genmake is a command line tool that generates a Makefile based on the files in your directory"
 homepage = "https://github.com/kallazz/genmake"
@@ -14,5 +14,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.3.23", features = ["derive"] }
+directories = "5.0.1"
 serde = { version = "1.0.185", features = ["derive"] }
 toml = "0.7.6"

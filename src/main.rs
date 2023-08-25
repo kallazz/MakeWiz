@@ -1,11 +1,11 @@
-use genmake::args;
 use genmake::make;
 use genmake::files;
-use genmake::defaults;
+use genmake::args::{self, Commands};
+use genmake::defaults::{self, Config};
 
-use args::Commands;
-use defaults::Config;
 use clap::Parser;
+use directories::ProjectDirs;
+
 use std::fs;
 use std::process;
 
@@ -20,10 +20,29 @@ fn main() {
         process::exit(1);
     });
 
+    //Set directory where the config file will be placed
+    let config_dir = ProjectDirs::from("", "",  "genmake")
+        .expect("Valid home directory path for the config file couldn't be retrieved");
+    let config_path = config_dir.config_dir();
+
+    //If the directory doesn't exist, create it
+    fs::create_dir_all(config_path).unwrap_or_else(|err| {
+        eprintln!("Error: {}", err);
+        process::exit(1);
+    });
+        
+    let config_path= config_path.join("config.toml");
+    // Linux:   /home/<username>/.config/genmake/config.toml
+    // Windows: C:\Users\<username>\AppData\Roaming\genmake\config.toml
+    // macOS:   /Users/<username>/Library/Application Support/genmake/config.toml
+
     //Initialize config
-    Config::init_config();
-    file_names.compiler = Config::get_current_compiler();
-    file_names.executable = Config::get_current_executable();
+    Config::init_config(&config_path);
+    let config = Config::get_current_config(&config_path);
+
+    //Set config values to later write them to the Makefile
+    file_names.compiler = config.compiler_name;
+    file_names.executable = config.executable_name;
 
     //Get user arguments
     let args = args::GenmakeArgs::parse();
@@ -47,16 +66,15 @@ fn main() {
     match &args.command {
         Some(command) => match command {
             Commands::SetCompiler(compiler) => {
-                Config::update_compiler(&compiler.name);
+                Config::update_config(defaults::Attribute::CompilerName(compiler.name.clone()), &config_path);
             },
 
             Commands::SetExecutable(executable) => {
-                Config::update_executable(&executable.name);
+                Config::update_config(defaults::Attribute::ExecutableName(executable.name.clone()), &config_path);
             },
 
             Commands::Default => {
-                println!("Default compiler name: {}", Config::get_current_compiler());
-                println!("Default executable name: {}", Config::get_current_executable());
+                Config::print_config_values(&config_path);
             }
         },
         None => { }

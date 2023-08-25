@@ -1,6 +1,12 @@
 use serde::{Serialize, Deserialize};
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::{Write, Read};
+use std::path::Path;
+
+pub enum Attribute {
+    CompilerName(String),
+    ExecutableName(String),
+}
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)] 
 pub struct Config {
@@ -9,43 +15,37 @@ pub struct Config {
 }
 
 impl Config {
-    fn set_new_config(config: Config) {
-        let serialized_config = toml::to_string(&config).unwrap();
-
-        let mut file = File::create("config.toml").unwrap();
-        file.write_all(serialized_config.as_bytes()).unwrap();
-    }
-
-    fn create_default_config() {
-        let config = Config {
-            compiler_name: "g++".to_string(),
-            executable_name: "main".to_string(),
-        };
-
-        let serialized_config = toml::to_string(&config).unwrap();
-
-        let mut file = File::create("config.toml").unwrap();
-        file.write_all(serialized_config.as_bytes()).unwrap();
-    }
-
-    pub fn init_config() {
-        let file_path = "config.toml";
-
-        match fs::metadata(file_path) {
-            Ok(metadata) => {
-                if metadata.is_file() { }
-                else {
-                    Config::create_default_config();
-                }
-            }
-            Err(_) => {
-                Config::create_default_config();
-            }
+    fn default() -> Self {
+        Self {
+            compiler_name: String::from("g++"),
+            executable_name: String::from("main"),
         }
     }
 
-    pub fn get_current_config() -> Config {
-        let mut file = std::fs::File::open("config.toml").unwrap();
+    pub fn init_config(config_path: &Path) {
+        if !Path::new(config_path).exists() { Config::create_config(Config::default(), config_path); }
+    }
+
+    pub fn update_config(attribute: Attribute, config_path: &Path) {
+        let mut config = Config::get_current_config(config_path);
+
+        match attribute {
+            Attribute::CompilerName(name) => { config.compiler_name = name; }
+            Attribute::ExecutableName(name) => { config.executable_name = name; }
+        }
+
+        Config::create_config(config, config_path);
+    }
+
+    pub fn print_config_values(config_path: &Path) {
+        let config = Config::get_current_config(config_path);
+
+        println!("Default compiler name: {}", config.compiler_name);
+        println!("Default executable name: {}", config.executable_name);
+    }
+
+    pub fn get_current_config(config_path: &Path) -> Config {
+        let mut file = std::fs::File::open(config_path).unwrap();
         let mut contents = String::new();
         file.read_to_string(&mut contents).unwrap();
 
@@ -54,31 +54,89 @@ impl Config {
         config
     }
 
-    pub fn update_compiler(compiler_name: &str) {
-        let mut config = Config::get_current_config();
+    fn create_config(config: Config, config_path: &Path) {
+        let serialized_config = toml::to_string(&config).unwrap();
 
-        config.compiler_name = compiler_name.to_string();
+        let mut file = File::create(config_path).unwrap();
+        file.write_all(serialized_config.as_bytes()).unwrap();
+    }
+}
 
-        Config::set_new_config(config);
+#[cfg(test)]
+mod test {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn getting_config() {
+        let config_path = Path::new("./test-dirs/test-config/config-to-get/config.toml");
+
+        let expected = Config {
+            compiler_name: String::from("compiler name to get"),
+            executable_name: String::from("executable name to get"),
+        };
+
+        assert_eq!(expected, Config::get_current_config(config_path));
     }
 
-    pub fn update_executable(executable_name: &str) {
-        let mut config = Config::get_current_config();
+    #[test]
+    fn init_config_not_created() {
+        let config_path = Path::new("./test-dirs/test-config/config-not-created/config.toml");
+        Config::init_config(config_path);
 
-        config.executable_name = executable_name.to_string();
+        let expected = Config::default();
 
-        Config::set_new_config(config);
+        assert_eq!(expected, Config::get_current_config(config_path));
+
+        fs::remove_file(config_path).unwrap();
     }
 
-    pub fn get_current_compiler() -> String {
-        let config = Config::get_current_config();
+    #[test]
+    fn init_config_created() {
+        let config_path = Path::new("./test-dirs/test-config/config-created/config.toml");
 
-        config.compiler_name
+        let created_config = Config {
+            compiler_name: String::from("created compiler name"),
+            executable_name: String::from("created executable name"),
+        };
+        Config::create_config(created_config, config_path);
+
+        Config::init_config(config_path);
+
+        let expected = Config {
+            compiler_name: String::from("created compiler name"),
+            executable_name: String::from("created executable name"),
+        };
+
+        assert_eq!(expected, Config::get_current_config(config_path));
     }
 
-    pub fn get_current_executable() -> String {
-        let config = Config::get_current_config();
+    #[test]
+    fn updating_config() {
+        let config_path = Path::new("./test-dirs/test-config/config-to-update/config.toml");
 
-        config.executable_name
+        let created_config = Config {
+            compiler_name: String::from("created compiler name"),
+            executable_name: String::from("created executable name"),
+        };
+        Config::create_config(created_config, config_path);
+
+        Config::update_config(Attribute::CompilerName(String::from("new compiler name")), config_path);
+
+        let expected = Config {
+            compiler_name: String::from("new compiler name"),
+            executable_name: String::from("created executable name"),
+        };
+
+        assert_eq!(expected, Config::get_current_config(config_path));
+
+        Config::update_config(Attribute::ExecutableName(String::from("new executable name")), config_path);
+
+        let expected = Config {
+            compiler_name: String::from("new compiler name"),
+            executable_name: String::from("new executable name"),
+        };
+
+        assert_eq!(expected, Config::get_current_config(config_path));
     }
 }
