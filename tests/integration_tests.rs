@@ -1,6 +1,6 @@
-use genmake::args;
-use genmake::make;
-use genmake::files;
+use makewiz::args;
+use makewiz::make;
+use makewiz::files;
 
 mod test {
     use super::*;
@@ -14,10 +14,10 @@ mod test {
 
         let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
 
-        let args = vec![String::from("target/debug/genmake"), String::from("-e"),
+        let args = vec![String::from("target/debug/makewiz"), String::from("-e"),
             String::from("executable"), String::from("-c"), String::from("compiler")];
 
-        let parsed_args = args::GenmakeArgs::parse_from(args);
+        let parsed_args = args::MakeWizArgs::parse_from(args);
         file_names.executable = parsed_args.executable.unwrap();
         file_names.compiler = parsed_args.compiler.unwrap();
 

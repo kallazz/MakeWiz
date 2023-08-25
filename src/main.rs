@@ -1,7 +1,7 @@
-use genmake::make;
-use genmake::files;
-use genmake::args::{self, Commands};
-use genmake::defaults::{self, Config};
+use makewiz::make;
+use makewiz::files;
+use makewiz::args::{self, Commands};
+use makewiz::defaults::{self, Config};
 
 use clap::Parser;
 use directories::ProjectDirs;
@@ -21,7 +21,7 @@ fn main() {
     });
 
     //Set directory where the config file will be placed
-    let config_dir = ProjectDirs::from("", "",  "genmake")
+    let config_dir = ProjectDirs::from("", "",  "makewiz")
         .expect("Valid home directory path for the config file couldn't be retrieved");
     let config_path = config_dir.config_dir();
 
@@ -32,9 +32,9 @@ fn main() {
     });
         
     let config_path= config_path.join("config.toml");
-    // Linux:   /home/<username>/.config/genmake/config.toml
-    // Windows: C:\Users\<username>\AppData\Roaming\genmake\config.toml
-    // macOS:   /Users/<username>/Library/Application Support/genmake/config.toml
+    // Linux:   /home/<username>/.config/makewiz/config.toml
+    // Windows: C:\Users\<username>\AppData\Roaming\makewiz\config.toml
+    // macOS:   /Users/<username>/Library/Application Support/makewiz/config.toml
 
     //Initialize config
     Config::init_config(&config_path);
@@ -45,7 +45,7 @@ fn main() {
     file_names.executable = config.executable_name;
 
     //Get user arguments
-    let args = args::GenmakeArgs::parse();
+    let args = args::MakeWizArgs::parse();
 
     // Check if both subcommand and flags are provided
     if args.subcommands_provided() && args.flags_provided() {
