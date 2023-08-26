@@ -8,7 +8,7 @@ Binary downloads will be available for [every release](https://github.com/kallaz
 
 ### Quick links
 
-* [Demonstration](#demonstration-of-MakeWiz-in-action)
+* [Demonstration](#demonstration-of-makewiz-in-action)
 * [Installation](#installation)
 * [User Guide](#user-guide)
 * [Your feedback](#your-feedback)
@@ -53,6 +53,8 @@ clean:
 All files with extensions other than `.cpp` `.hpp` `.c` `.h` will be automatically ignored by `makewiz`
 
 ## Installation
+
+### Debian
 If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file. 
 
 ```
@@ -62,10 +64,35 @@ $ sudo dpkg -i genmake_0.5.0_amd64.deb
 
 If you wish to install a version other than the latest, all `.deb` binaries will be available in [MakeWiz releases](https://github.com/kallazz/MakeWiz/releases/).
 
-Right now **other systems are not supported**, but they will be in the future.
+### Cargo
+If you have **Rust** installed, you can download MakeWiz using **cargo**.
+
+```
+$ cargo install makewiz
+```
 
 ## User Guide
+To generate a Makefile using MakeWiz, simply enter the command `makewiz` in your terminal.
 
+By default, MakeWiz will create a Makefile with the executable name *main* and compiler *g++*. You can change this behaviour by using commands and options listed below. If you are not sure what your default compiler and executable values are, you can just run `makewiz default`.
+
+```
+MakeWiz is a command line tool that generates a Makefile based on the files in your directory
+
+Usage: makewiz [OPTIONS] [COMMAND]
+
+Commands:
+  set-compiler <COMPILER_NAME>      Set the default compiler name
+  set-executable <EXECUTABLE_NAME>  Set the default executable name
+  default                           Show default values
+  help                              Print this message or the help of the given subcommand(s)
+
+Options:
+  -e, --executable <EXECUTABLE_NAME>  Set the executable name for THIS Makefile
+  -c, --compiler <COMPILER_NAME>      Set the compiler name for THIS Makefile
+  -h, --help                          Print help
+  -V, --version                       Print version
+```
 
 ## Your feedback
 If you have any questions, suggestions, or run into any issues, feel free to head over to the [Issues](https://github.com/kallazz/genmake/issues) tab. Your feedback is very important to me.
