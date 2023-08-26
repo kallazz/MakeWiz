@@ -1,8 +1,8 @@
 # MakeWiz
 MakeWiz is a handy command-line tool designed to make working with Makefiles easier.
-With just one simple command, genmake does the work of creating a neat Makefile that perfectly fits the files in your directory. 
+With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory. 
 Right now, it is available for Debian-based Linux distros, but other systems should be supported in the future too.
-Binary downloads will be available for [every release](https://github.com/kallazz/genmake/releases/).
+Binary downloads will be available for [every release](https://github.com/kallazz/MakeWiz/releases/).
 
 🔐 MakeWiz is licensed under MIT license.
 
@@ -95,4 +95,4 @@ Options:
 ```
 
 ## Your feedback
-If you have any questions, suggestions, or run into any issues, feel free to head over to the [Issues](https://github.com/kallazz/genmake/issues) tab. Your feedback is very important to me.
+If you have any questions, suggestions, or run into any issues, feel free to head over to the [Issues](https://github.com/kallazz/MakeWiz/issues) tab. Your feedback is very important to me.
