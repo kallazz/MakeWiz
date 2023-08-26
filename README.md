@@ -54,8 +54,15 @@ All files with extensions other than `.cpp` `.hpp` `.c` `.h` will be automatical
 
 ## Installation
 
+### Arch Linux
+If you are an **Arch Linux** user(or any other Arch-based distros like **Manjaro**), you can install MakeWiz from [AUR](https://aur.archlinux.org/packages/makewiz-bin/) using a tool like `yay` or `paru`:
+
+```
+$ yay -S makewiz
+```
+
 ### Debian
-If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file. 
+If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file:
 
 ```
 $ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.5.0/genmake_0.5.0_amd64.deb
@@ -65,7 +72,7 @@ $ sudo dpkg -i genmake_0.5.0_amd64.deb
 If you wish to install a version other than the latest, all `.deb` binaries will be available in [MakeWiz releases](https://github.com/kallazz/MakeWiz/releases/).
 
 ### Cargo
-If you have **Rust** installed, you can download MakeWiz using **cargo**.
+If you have **Rust** installed, you can download MakeWiz using **cargo**:
 
 ```
 $ cargo install makewiz
@@ -88,8 +95,8 @@ Commands:
   help                              Print this message or the help of the given subcommand(s)
 
 Options:
-  -e, --executable <EXECUTABLE_NAME>  Set the executable name for THIS Makefile
   -c, --compiler <COMPILER_NAME>      Set the compiler name for THIS Makefile
+  -e, --executable <EXECUTABLE_NAME>  Set the executable name for THIS Makefile
   -h, --help                          Print help
   -V, --version                       Print version
 ```
