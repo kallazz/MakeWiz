@@ -8,12 +8,12 @@ Binary downloads will be available for [every release](https://github.com/kallaz
 
 ### Quick links
 
-* [Demonstration](#demonstration-of-genmake-in-action)
+* [Demonstration](#demonstration-of-MakeWiz-in-action)
 * [Installation](#installation)
 * [User Guide](#user-guide)
 * [Your feedback](#your-feedback)
 
-## Demonstration of genmake in action
+## Demonstration of MakeWiz in action
 
 Let's say that you have a directory with such files
 
@@ -22,7 +22,7 @@ Let's say that you have a directory with such files
 * `Vehicle.hpp`
 * `main.cpp` and executable `main`
 
-After running `genmake`, a Makefile like this will be created
+After running `makewiz`, a Makefile like this will be created
 
 ```Makefile
 OBJS = Bike.o Car.o main.o
@@ -50,53 +50,22 @@ clean:
     rm -f $(OBJS) $(OUT)
 ```
 
-All files with extensions other than `.cpp`, `.hpp`, `.c`, `.h` will be automatically ignored by `genmake`
+All files with extensions other than `.cpp` `.hpp` `.c` `.h` will be automatically ignored by `makewiz`
 
 ## Installation
-If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install genmake using a `.deb` file. 
+If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file. 
 
 ```
-$ sudo curl -LO https://github.com/kallazz/genmake/releases/download/v0.5.0/genmake_0.5.0_amd64.deb
+$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.5.0/genmake_0.5.0_amd64.deb
 $ sudo dpkg -i genmake_0.5.0_amd64.deb
 ```
 
-If you wish to install a version other than the latest, all `.deb` binaries will be available in [genmake releases](https://github.com/kallazz/genmake/releases/).
+If you wish to install a version other than the latest, all `.deb` binaries will be available in [MakeWiz releases](https://github.com/kallazz/MakeWiz/releases/).
 
 Right now **other systems are not supported**, but they will be in the future.
 
 ## User Guide
-Currently, there are 3 ways to use `genmake`. Each of them will generate a Makefile.
-The only difference will be the names of the executable file and the compiler.
 
-* **No arguments:** `genmake`
-
-   Makefile will be created with the **default compiler and executable names**. Default names are **main** for the executable and **g++** for the compiler.
-
-   ```
-   OUT = main
-   CC = g++
-   ```
-
-* **One argument:** `genmake your_executable`
-
-   Makefile will be created with the **default compiler**, but **your own executable name**.
-
-   ```
-   OUT = your_executable
-   CC = g++
-   ```
-
-* **Two arguments:** `genmake your_executable your_compiler`
-
-   Makefile will be created with **your own executable and compiler names**.
-
-   ```
-   OUT = your_executable
-   CC = your_compiler
-   ```
-
-This is not a very convenient approach, if you don't want to use the default values. 
-It will be modified with flags and environmental variables in the future.
 
 ## Your feedback
 If you have any questions, suggestions, or run into any issues, feel free to head over to the [Issues](https://github.com/kallazz/genmake/issues) tab. Your feedback is very important to me.
