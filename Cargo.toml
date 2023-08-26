@@ -11,8 +11,9 @@ keywords = ["makefile", "generate"]
 categories = ["command-line-utilities", "development-tools"]
 license = "MIT"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+exclude = [
+    "/test-dirs",
+]
 
 [dependencies]
 clap = { version = "4.3.23", features = ["derive"] }
