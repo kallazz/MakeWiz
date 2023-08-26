@@ -6,13 +6,13 @@ pub struct MakeWizArgs {
     #[command(subcommand)]
     pub command: Option<Commands>,
 
-    /// Set the executable name for THIS Makefile
-    #[arg(short, long, value_name = "EXECUTABLE_NAME")]
-    pub executable: Option<String>,
-
     /// Set the compiler name for THIS Makefile
     #[arg(short, long, value_name = "COMPILER_NAME")]
     pub compiler: Option<String>,
+
+    /// Set the executable name for THIS Makefile
+    #[arg(short, long, value_name = "EXECUTABLE_NAME")]
+    pub executable: Option<String>,
 }
 
 #[derive(Subcommand)]
