@@ -1,8 +1,7 @@
 # MakeWiz
 MakeWiz is a handy command-line tool designed to make working with Makefiles easier.
 With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory. 
-Right now, it is available for Debian-based Linux distros, but other systems should be supported in the future too.
-Binary downloads will be available for [every release](https://github.com/kallazz/MakeWiz/releases/).
+Right now, it is available for Debian and Arch based Linux distros, but other systems should be supported in the future too.
 
 🔐 MakeWiz is licensed under MIT license.
 
@@ -65,8 +64,8 @@ $ yay -S makewiz
 If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file:
 
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.5.0/genmake_0.5.0_amd64.deb
-$ sudo dpkg -i genmake_0.5.0_amd64.deb
+$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.6.0/makewiz_0.6.0_amd64.deb
+$ sudo dpkg -i makewiz_0.6.0_amd64.deb
 ```
 
 If you wish to install a version other than the latest, all `.deb` binaries will be available in [MakeWiz releases](https://github.com/kallazz/MakeWiz/releases/).
