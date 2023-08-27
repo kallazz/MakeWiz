@@ -54,7 +54,7 @@ impl Makefile {
 
     fn add_all(&mut self) {
         let mut new_line = "\nall: $(OBJS)\n".to_string();
-        new_line.push_str("    $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n");
+        new_line.push_str("\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n");
 
         self.file.push_str(&new_line);
     }
@@ -69,7 +69,7 @@ impl Makefile {
             new_line.push_str(&source_files[i]);
             new_line.push('\n');
 
-            new_line.push_str("    $(CC) $(FLAGS) ");
+            new_line.push_str("\t$(CC) $(FLAGS) ");
             new_line.push_str(&source_files[i]);
             new_line.push('\n');
 
@@ -78,7 +78,7 @@ impl Makefile {
     }
 
     fn add_clean(&mut self) {
-        let new_line = "\n\nclean:\n    rm -f $(OBJS) $(OUT)\n";
+        let new_line = "\n\nclean:\n\trm -f $(OBJS) $(OUT)\n";
 
         self.file.push_str(new_line);
     }
@@ -128,7 +128,7 @@ mod test {
 
         makefile.add_all();
 
-        let expected = "\nall: $(OBJS)\n    $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n";
+        let expected = "\nall: $(OBJS)\n\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n";
 
         assert_eq!(expected, makefile.get_file());
     }
@@ -141,10 +141,10 @@ mod test {
 
         makefile.add_execution(&object_files, &source_files);
 
-        let expected = "\nfile.o: file.cpp\n    $(CC) $(FLAGS) file.cpp\n\
-            \nmain.o: main.cpp\n    $(CC) $(FLAGS) main.cpp\n\
-            \nCar.o: Car.cpp\n    $(CC) $(FLAGS) Car.cpp\n\
-            \nPlane.o: Plane.cpp\n    $(CC) $(FLAGS) Plane.cpp\n";
+        let expected = "\nfile.o: file.cpp\n\t$(CC) $(FLAGS) file.cpp\n\
+            \nmain.o: main.cpp\n\t$(CC) $(FLAGS) main.cpp\n\
+            \nCar.o: Car.cpp\n\t$(CC) $(FLAGS) Car.cpp\n\
+            \nPlane.o: Plane.cpp\n\t$(CC) $(FLAGS) Plane.cpp\n";
 
         assert_eq!(expected, makefile.get_file());
     }
@@ -155,7 +155,7 @@ mod test {
 
         makefile.add_clean();
 
-        let expected = "\n\nclean:\n    rm -f $(OBJS) $(OUT)\n";
+        let expected = "\n\nclean:\n\trm -f $(OBJS) $(OUT)\n";
 
         assert_eq!(expected, makefile.get_file());
     }

@@ -1,6 +1,6 @@
 [package]
 name = "makewiz"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Michał Kallas"]
 description = "MakeWiz is a command line tool that generates a Makefile based on the files in your directory"
 homepage = "https://github.com/kallazz/MakeWiz"
