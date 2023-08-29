@@ -14,17 +14,28 @@ mod test {
         let mut file_names = build_config::ProjectBuildConfig::extract_names(paths_to_files).unwrap();
 
         let args = vec![String::from("target/debug/makewiz"), String::from("-e"),
-            String::from("executable"), String::from("-c"), String::from("compiler")];
+            String::from("executable"), String::from("-c"), String::from("compiler"), 
+            String::from("-m"), String::from("-t"), String::from("-r"),
+            String::from("--cunit"), String::from("--cppunit")];
 
         let parsed_args = args::MakeWizArgs::parse_from(args);
-        file_names.executable = parsed_args.executable.unwrap();
-        file_names.compiler = parsed_args.compiler.unwrap();
+
+        if let Some(executable) = &parsed_args.executable {
+            file_names.executable = executable.clone();
+        }
+        if let Some(compiler) = &parsed_args.compiler {
+            file_names.compiler = compiler.clone();
+        }
+
+        let (lflags, ldlibs) = parsed_args.parse_flags();
+        file_names.lflags = lflags.clone();
+        file_names.ldlibs = ldlibs.clone();
 
         let expected = "\
 # Compiler and flags
 CC = compiler
 FLAGS = -g -c -Wall
-LFLAGS = 
+LFLAGS = -lpthread -lm
 
 # Source files and object files
 OBJS = AnotherClass.o SomeClass.o main.o
@@ -33,7 +44,7 @@ HEADER = AnotherClass.hpp SomeClass.hpp SomeHeader.hpp
 OUT = executable
 
 # Libraries
-LDLIBS = 
+LDLIBS = -lcunit -lcppunit -lcrypto
 
 # Default target
 all: $(OUT)

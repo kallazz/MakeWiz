@@ -28,20 +28,20 @@ pub struct ProjectBuildConfig {
     pub headers: StringVector,
     pub objects: StringVector,
     pub sources: StringVector,
-    pub lflags: StringVector,
-    pub ldlibs: StringVector,
+    pub lflags: String,
+    pub ldlibs: String,
 }
 
 impl ProjectBuildConfig {
     fn new() -> ProjectBuildConfig {
         ProjectBuildConfig { 
-            sources: StringVector::new(),
-            objects: StringVector::new(),
-            headers: StringVector::new(),
-            executable: String::new(),
             compiler: String::new(),
-            lflags: StringVector::new(),
-            ldlibs: StringVector::new(),
+            executable: String::new(),
+            headers: StringVector::new(),
+            objects: StringVector::new(),
+            sources: StringVector::new(),
+            lflags: String::new(),
+            ldlibs: String::new(),
         }
     }
 
@@ -141,13 +141,13 @@ mod test {
     fn extract_names_correct_files_without_folders() {
         let paths = fs::read_dir("./test-dirs/test-extracting-filenames/standard-without-folders").unwrap();
         let expected = ProjectBuildConfig {
+            compiler: String::new(),
+            executable: String::new(),
+            headers: StringVector(vec![String::from("c_header.h"), String::from("cpp_header.hpp")]),
             sources: StringVector(vec![String::from("c_source.c"), String::from("cpp_source.cpp")]),
             objects: StringVector(vec![String::from("c_source.o"), String::from("cpp_source.o")]),
-            headers: StringVector(vec![String::from("c_header.h"), String::from("cpp_header.hpp")]),
-            executable: String::new(),
-            compiler: String::new(),
-            lflags: StringVector::new(),
-            ldlibs: StringVector::new(),
+            lflags: String::new(),
+            ldlibs: String::new(),
         };
         let result = ProjectBuildConfig::extract_names(paths).unwrap();
 
@@ -158,13 +158,13 @@ mod test {
     fn extract_names_correct_files_with_folders() {
         let paths = fs::read_dir("./test-dirs/test-extracting-filenames/standard-with-folders").unwrap();
         let expected = ProjectBuildConfig {
-            sources: StringVector(vec![String::from("c_source.c"), String::from("cpp_source.cpp")]),
-            objects: StringVector(vec![String::from("c_source.o"), String::from("cpp_source.o")]),
-            headers: StringVector(vec![String::from("c_header.h"), String::from("cpp_header.hpp")]),
-            executable: String::new(),
             compiler: String::new(),
-            lflags: StringVector::new(),
-            ldlibs: StringVector::new(),
+            executable: String::new(),
+            headers: StringVector(vec![String::from("c_header.h"), String::from("cpp_header.hpp")]),
+            objects: StringVector(vec![String::from("c_source.o"), String::from("cpp_source.o")]),
+            sources: StringVector(vec![String::from("c_source.c"), String::from("cpp_source.cpp")]),
+            lflags: String::new(),
+            ldlibs: String::new(),
         };
         let result = ProjectBuildConfig::extract_names(paths).unwrap();
 

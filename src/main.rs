@@ -52,7 +52,7 @@ fn main() {
         std::process::exit(1);
     }
 
-    //Handle flags
+    //Handle options
     if let Some(executable) = &args.executable {
         file_names.executable = executable.clone();
     }
@@ -60,6 +60,11 @@ fn main() {
     if let Some(compiler) = &args.compiler {
         file_names.compiler = compiler.clone();
     }
+
+    //Handle flags
+    let (lflags, ldlibs) = args.parse_flags();
+    file_names.lflags = lflags;
+    file_names.ldlibs = ldlibs;
 
     //Handle subcommands
     match &args.command {
