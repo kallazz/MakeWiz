@@ -24,27 +24,32 @@ Let's say that you have a directory with such files
 After running `makewiz`, a Makefile like this will be created
 
 ```Makefile
+# Compiler and flags
+CC = g++
+FLAGS = -g -c -Wall
+LFLAGS =
+
+# Source files and object files
 OBJS = Bike.o Car.o main.o
 SOURCE = Bike.cpp Car.cpp main.cpp
 HEADER = Bike.hpp Car.hpp Vehicle.hpp
 OUT = main
-CC = g++
-FLAGS = -g -c -Wall
-LFLAGS = 
 
-all: $(OBJS)
-    $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+# Libraries
+LDLIBS =
 
-Bike.o: Bike.cpp
-    $(CC) $(FLAGS) Bike.cpp
+# Default target
+all: $(OUT)
 
-Car.o: Car.cpp
-    $(CC) $(FLAGS) Car.cpp
+# Linking rules
+$(OUT): $(OBJS)
+    $(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LDLIBS)
 
-main.o: main.cpp
-    $(CC) $(FLAGS) main.cpp
+# Compilation rules
+%.o: %.cpp $(HEADER)
+    $(CC) $(FLAGS) -o $@ $<
 
-
+# Clean rule
 clean:
     rm -f $(OBJS) $(OUT)
 ```

@@ -24,30 +24,34 @@ mod test {
         let makefile = make::Makefile::create(&file_names);
 
         let expected = "\
-OBJS = AnotherClass.o SomeClass.o main.o
-SOURCE = AnotherClass.cpp SomeClass.cpp main.cpp
-HEADER = AnotherClass.hpp SomeClass.hpp SomeHeader.hpp
-OUT = executable
+# Compiler and flags
 CC = compiler
 FLAGS = -g -c -Wall
 LFLAGS = 
 
-all: $(OBJS)
-\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+# Source files and object files
+OBJS = AnotherClass.o SomeClass.o main.o
+SOURCE = AnotherClass.cpp SomeClass.cpp main.cpp
+HEADER = AnotherClass.hpp SomeClass.hpp SomeHeader.hpp
+OUT = executable
 
-AnotherClass.o: AnotherClass.cpp
-\t$(CC) $(FLAGS) AnotherClass.cpp
+# Libraries
+LDLIBS = 
 
-SomeClass.o: SomeClass.cpp
-\t$(CC) $(FLAGS) SomeClass.cpp
+# Default target
+all: $(OUT)
 
-main.o: main.cpp
-\t$(CC) $(FLAGS) main.cpp
+# Linking rules
+$(OUT): $(OBJS)
+\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LDLIBS)
 
+# Compilation rules
+%.o: %.cpp $(HEADER)
+\t$(CC) $(FLAGS) -o $@ $<
 
+# Clean rule
 clean:
 \trm -f $(OBJS) $(OUT)\n";
-
         assert_eq!(expected, makefile.get_file());
     }
 }

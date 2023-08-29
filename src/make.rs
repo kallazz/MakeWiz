@@ -13,17 +13,36 @@ impl Makefile {
 
     pub fn create(file_names: &FileNames) -> Makefile {
         let mut makefile = Makefile::new();
+        makefile.add_comment("Compiler and flags");
+        makefile.add_one("CC", &file_names.compiler);
+        makefile.add_multiple("FLAGS", &vec!["-g".to_string(), "-c".to_string(), "-Wall".to_string(),]);
+        makefile.add_one("LFLAGS", "");
+        makefile.file.push('\n');
+
+        makefile.add_comment("Source files and object files");
         makefile.add_multiple("OBJS", &file_names.objects);
         makefile.add_multiple("SOURCE", &file_names.sources);
         makefile.add_multiple("HEADER", &file_names.headers);
         makefile.add_one("OUT", &file_names.executable);
-        makefile.add_one("CC", &file_names.compiler);
-        makefile.add_multiple("FLAGS", &vec!["-g".to_string(), "-c".to_string(), "-Wall".to_string(),]);
-        makefile.add_one("LFLAGS", "");
+        makefile.file.push('\n');
 
+        makefile.add_comment("Libraries");
+        makefile.add_one("LDLIBS", "");
+        makefile.file.push('\n');
+
+        makefile.add_comment("Default target");
         makefile.add_all();
-        makefile.add_execution(&file_names.objects, &file_names.sources);
+        makefile.file.push('\n');
 
+        makefile.add_comment("Linking rules");
+        makefile.add_linking_rules();
+        makefile.file.push('\n');
+
+        makefile.add_comment("Compilation rules");
+        makefile.add_compilation_rules();
+        makefile.file.push('\n');
+
+        makefile.add_comment("Clean rule");
         makefile.add_clean();
 
         makefile
@@ -52,33 +71,35 @@ impl Makefile {
         self.file.push_str(&new_line);
     }
 
-    fn add_all(&mut self) {
-        let mut new_line = "\nall: $(OBJS)\n".to_string();
-        new_line.push_str("\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n");
+    fn add_comment(&mut self, comment: &str) {
+        let mut new_line = String::from("# ");
+        new_line.push_str(&comment);
+
+        new_line.push('\n');
 
         self.file.push_str(&new_line);
     }
 
-    fn add_execution(&mut self, object_files: &Vec<String>, source_files: &Vec<String>) {
-        let size = object_files.len();
+    fn add_all(&mut self) {
+        let new_line = "all: $(OUT)\n".to_string();
 
-        for i in 0..size {
-            let mut new_line = String::from("\n");
-            new_line.push_str(&object_files[i]);
-            new_line.push_str(": ");
-            new_line.push_str(&source_files[i]);
-            new_line.push('\n');
+        self.file.push_str(&new_line);
+    }
 
-            new_line.push_str("\t$(CC) $(FLAGS) ");
-            new_line.push_str(&source_files[i]);
-            new_line.push('\n');
+    fn add_linking_rules(&mut self) {
+        let new_line = "$(OUT): $(OBJS)\n\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LDLIBS)\n";
 
-            self.file.push_str(&new_line);
-        }
+        self.file.push_str(&new_line);
+    }
+
+    fn add_compilation_rules(&mut self) {
+        let new_line = "%.o: %.cpp $(HEADER)\n\t$(CC) $(FLAGS) -o $@ $<\n";
+
+        self.file.push_str(&new_line);
     }
 
     fn add_clean(&mut self) {
-        let new_line = "\n\nclean:\n\trm -f $(OBJS) $(OUT)\n";
+        let new_line = "clean:\n\trm -f $(OBJS) $(OUT)\n";
 
         self.file.push_str(new_line);
     }
@@ -128,23 +149,7 @@ mod test {
 
         makefile.add_all();
 
-        let expected = "\nall: $(OBJS)\n\t$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)\n";
-
-        assert_eq!(expected, makefile.get_file());
-    }
-
-    #[test]
-    fn adding_execution() {
-        let mut makefile = Makefile::new();
-        let object_files = vec!["file.o".to_string(), "main.o".to_string(), "Car.o".to_string(), "Plane.o".to_string()];
-        let source_files = vec!["file.cpp".to_string(), "main.cpp".to_string(), "Car.cpp".to_string(), "Plane.cpp".to_string()];
-
-        makefile.add_execution(&object_files, &source_files);
-
-        let expected = "\nfile.o: file.cpp\n\t$(CC) $(FLAGS) file.cpp\n\
-            \nmain.o: main.cpp\n\t$(CC) $(FLAGS) main.cpp\n\
-            \nCar.o: Car.cpp\n\t$(CC) $(FLAGS) Car.cpp\n\
-            \nPlane.o: Plane.cpp\n\t$(CC) $(FLAGS) Plane.cpp\n";
+        let expected = "all: $(OUT)\n";
 
         assert_eq!(expected, makefile.get_file());
     }
@@ -155,7 +160,7 @@ mod test {
 
         makefile.add_clean();
 
-        let expected = "\n\nclean:\n\trm -f $(OBJS) $(OUT)\n";
+        let expected = "clean:\n\trm -f $(OBJS) $(OUT)\n";
 
         assert_eq!(expected, makefile.get_file());
     }
