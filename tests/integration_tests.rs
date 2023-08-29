@@ -1,6 +1,5 @@
 use makewiz::args;
-use makewiz::make;
-use makewiz::files;
+use makewiz::build_config;
 
 mod test {
     use super::*;
@@ -12,7 +11,7 @@ mod test {
     fn makefile_creation() {
         let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
-        let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap();
+        let mut file_names = build_config::ProjectBuildConfig::extract_names(paths_to_files).unwrap();
 
         let args = vec![String::from("target/debug/makewiz"), String::from("-e"),
             String::from("executable"), String::from("-c"), String::from("compiler")];
@@ -20,8 +19,6 @@ mod test {
         let parsed_args = args::MakeWizArgs::parse_from(args);
         file_names.executable = parsed_args.executable.unwrap();
         file_names.compiler = parsed_args.compiler.unwrap();
-
-        let makefile = make::Makefile::create(&file_names);
 
         let expected = "\
 # Compiler and flags
@@ -52,6 +49,6 @@ $(OUT): $(OBJS)
 # Clean rule
 clean:
 \trm -f $(OBJS) $(OUT)\n";
-        assert_eq!(expected, makefile.get_file());
+        assert_eq!(expected, makewiz::generate_makefile(&file_names));
     }
 }

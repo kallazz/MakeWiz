@@ -1,7 +1,6 @@
-use makewiz::make;
-use makewiz::files;
+use makewiz::build_config;
 use makewiz::args::{self, Commands};
-use makewiz::defaults::{self, Config};
+use makewiz::user_config_manager::{self, UserConfig};
 
 use clap::Parser;
 use directories::ProjectDirs;
@@ -15,7 +14,7 @@ fn main() {
         process::exit(1);
     });
 
-    let mut file_names = files::FileNames::extract_names(paths_to_files).unwrap_or_else(|err| {
+    let mut file_names = build_config::ProjectBuildConfig::extract_names(paths_to_files).unwrap_or_else(|err| {
         eprintln!("Error: {}", err);
         process::exit(1);
     });
@@ -37,8 +36,8 @@ fn main() {
     // macOS:   /Users/<username>/Library/Application Support/makewiz/config.toml
 
     //Initialize config
-    Config::init_config(&config_path);
-    let config = Config::get_current_config(&config_path);
+    UserConfig::init_config(&config_path);
+    let config = UserConfig::get_current_config(&config_path);
 
     //Set config values to later write them to the Makefile
     file_names.compiler = config.compiler_name;
@@ -66,15 +65,15 @@ fn main() {
     match &args.command {
         Some(command) => match command {
             Commands::SetCompiler(compiler) => {
-                Config::update_config(defaults::Attribute::CompilerName(compiler.name.clone()), &config_path);
+                UserConfig::update_config(user_config_manager::Attribute::CompilerName(compiler.name.clone()), &config_path);
             },
 
             Commands::SetExecutable(executable) => {
-                Config::update_config(defaults::Attribute::ExecutableName(executable.name.clone()), &config_path);
+                UserConfig::update_config(user_config_manager::Attribute::ExecutableName(executable.name.clone()), &config_path);
             },
 
             Commands::Default => {
-                Config::print_config_values(&config_path);
+                UserConfig::print_config_values(&config_path);
             }
         },
         None => { }
@@ -84,8 +83,8 @@ fn main() {
     if args.subcommands_provided() { std::process::exit(0); } 
 
     //Creating the makefile
-    let makefile = make::Makefile::create(&file_names);
+    let makefile = makewiz::generate_makefile(&file_names);
 
-    fs::write("./Makefile", makefile.get_file()).expect("Unable to create a Makefile");
+    fs::write("./Makefile", makefile).expect("Unable to create a Makefile");
     println!("Makefile successfully created");
 }
