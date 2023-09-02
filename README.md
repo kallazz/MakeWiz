@@ -3,7 +3,7 @@ MakeWiz is a handy command-line tool designed to make working with Makefiles eas
 With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory. 
 Right now, it is available for Debian and Arch based Linux distros, but other systems should be supported in the future too.
 
-🔐 MakeWiz is licensed under MIT license.
+🔐 MakeWiz is dual-licensed under MIT or Apache 2.0.
 
 ### Quick links
 

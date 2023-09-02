@@ -1,16 +1,17 @@
 [package]
 name = "makewiz"
-version = "0.6.1"
+version = "0.7.0"
 authors = ["Michał Kallas"]
 description = "MakeWiz is a command line tool that generates a Makefile based on the files in your directory"
 homepage = "https://github.com/kallazz/MakeWiz"
 repository = "https://github.com/kallazz/MakeWiz"
 documentation = "https://github.com/kallazz/MakeWiz"
 readme = "README.md"
-keywords = ["makefile", "generate"]
+keywords = ["generate", "generator", "makefile"]
 categories = ["command-line-utilities", "development-tools"]
-license = "MIT"
+license = "MIT OR Apache-2.0"
 edition = "2021"
+build = "build.rs"
 exclude = [
     "/test-dirs",
 ]
@@ -20,3 +21,19 @@ clap = { version = "4.3.23", features = ["derive"] }
 directories = "5.0.1"
 serde = { version = "1.0.185", features = ["derive"] }
 toml = "0.7.6"
+
+[build-dependencies]
+clap = { version = "4.3.23", features = ["derive"] }
+clap_complete = "4.4.0"
+
+[features]
+generate_completions = []
+
+[package.metadata.rpm]
+package = "makewiz"
+
+[package.metadata.rpm.cargo]
+buildflags = ["--release"]
+
+[package.metadata.rpm.targets]
+makewiz = { path = "/usr/bin/makewiz" }
