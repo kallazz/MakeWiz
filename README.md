@@ -67,30 +67,30 @@ All files with extensions other than `.cpp` `.hpp` `.c` `.h` will be automatical
 If you are an **Arch Linux** user(or any other Arch-based distros like **Manjaro**), you can install MakeWiz from [AUR](https://aur.archlinux.org/packages/makewiz-bin/) using a tool like `yay` or `paru`:
 
 ```
-$ yay -S makewiz
+yay -S makewiz
 ```
 
 ### Debian
 If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file:
 
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz_0.7.0_amd64.deb
-$ sudo dpkg -i makewiz_0.7.0_amd64.deb
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz_0.7.0_amd64.deb
+sudo dpkg -i makewiz_0.7.0_amd64.deb
 ```
 
 ### RedHat/Fedora
 If you are using a **RedHat-based Linux distribution** like **Fedora** or **CentOS**, you can install MakeWiz using a **.rpm** file:
 
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz-0.7.0-1.x86_64.rpm
-$ sudo rpm -i makewiz-0.7.0-1.x86_64.rpm
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz-0.7.0-1.x86_64.rpm
+sudo rpm -i makewiz-0.7.0-1.x86_64.rpm
 ```
 
 ### Cargo
 If you have **Rust** installed, you can download MakeWiz using **cargo**:
 
 ```
-$ cargo install makewiz
+cargo install makewiz
 ```
 
 
@@ -104,18 +104,18 @@ You can also download them using these commands:
 
 **Bash:**
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.bash
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.bash
 ```
 
 **Fish:**
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.fish
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.fish
 ```
 
 
 **Zsh:**
 ```
-$ sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/_makewiz
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/_makewiz
 ```
 
 After downloading the script for your preferred shell, follow these steps to enable auto-completion:
