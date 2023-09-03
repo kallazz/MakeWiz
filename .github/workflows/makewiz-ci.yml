@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+env: 
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build_and_test:
+    name: MakeWiz - latest
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+      - run: cargo build --verbose
+      - run: cargo test --verbose
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: makewiz-artifact
+          path: target/debug/makewiz
+
+  test_binary:
+    name: Test MakeWiz Binary with Make
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: makewiz-artifact
+
+      - name: Copy the executable to test dirs
+        run: |
+          chmod +x makewiz
+          cp makewiz ci/c-test
+          cp makewiz ci/cpp-test
+
+      - name: Test C with -lm
+        run: |
+          cd ci/c-test
+          ./makewiz -c clang -m
+          make
+          ./main
+
+      - name: Test C++
+        run: |
+          cd ci/cpp-test
+          ./makewiz -c g++
+          make
+          ./main

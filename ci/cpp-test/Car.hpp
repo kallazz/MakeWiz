@@ -3,7 +3,7 @@
 
 #include "Vehicle.hpp"
 
-class Car : Vehicle {
+class Car : public Vehicle {
 public:
     virtual void getName() override;
 };
