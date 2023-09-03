@@ -3,7 +3,7 @@ MakeWiz is a handy command-line tool designed to make working with Makefiles eas
 With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory. 
 It is available for all major Linux distros.
 
-[![Build status](https://github.com/kallazz/makewiz/actions/workflows/makewiz-ci.yml/badge.svg)](https://github.com/kallazz/makewiz/actions)
+[![Build status](https://github.com/kallazz/MakeWiz/actions/workflows/makewiz-ci.yml/badge.svg)](https://github.com/kallazz/MakeWiz/actions)
 [![Crates.io](https://img.shields.io/crates/v/makewiz.svg)](https://crates.io/crates/makewiz)
 
 🔐 MakeWiz is dual-licensed under MIT or Apache 2.0.
