@@ -1,4 +1,4 @@
-pub mod args;
+pub mod cli;
 pub mod build_config;
 pub mod user_config_manager;
 

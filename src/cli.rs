@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand, Args};
 
 #[derive(Parser)]
 #[command(author, version, about)]
-pub struct MakeWizArgs {
+pub struct CLI {
     #[command(subcommand)]
     pub command: Option<Commands>,
 
@@ -53,7 +53,7 @@ pub struct NameArgument {
     pub name: String,
 }
 
-impl MakeWizArgs {
+impl CLI {
     pub fn subcommands_provided(&self) -> bool {
         self.command.is_some()
     }

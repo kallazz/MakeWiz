@@ -1,4 +1,4 @@
-use makewiz::args;
+use makewiz::cli;
 use makewiz::build_config;
 
 mod test {
@@ -18,7 +18,7 @@ mod test {
             String::from("-m"), String::from("-t"), String::from("-r"),
             String::from("--cunit"), String::from("--cppunit")];
 
-        let parsed_args = args::MakeWizArgs::parse_from(args);
+        let parsed_args = cli::CLI::parse_from(args);
 
         if let Some(executable) = &parsed_args.executable {
             file_names.executable = executable.clone();

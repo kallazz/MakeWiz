@@ -4,7 +4,7 @@ use clap_complete::{generate_to, Shell};
 use std::env;
 use std::io::Error;
 
-include!("src/args.rs");
+include!("src/cli.rs");
 
 #[allow(dead_code)]
 const SHELLS: [Shell; 3] = [Shell::Bash, Shell::Fish, Shell::Zsh];
@@ -13,7 +13,7 @@ const SHELLS: [Shell; 3] = [Shell::Bash, Shell::Fish, Shell::Zsh];
 fn generate_autocompletions() -> Result<(), Error> {
     let outdir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("completions/");
 
-    let mut cmd = MakeWizArgs::command();
+    let mut cmd = CLI::command();
     for shell in SHELLS {
         generate_to(shell, &mut cmd, "makewiz", &outdir)?;
         println!("cargo:warning=autocompletion file generated for {}: {:?}", shell, outdir);

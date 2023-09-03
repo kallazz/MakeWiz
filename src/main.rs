@@ -1,5 +1,5 @@
 use makewiz::build_config;
-use makewiz::args::{self, Commands};
+use makewiz::cli::{self, Commands};
 use makewiz::user_config_manager::{self, UserConfig};
 
 use clap::Parser;
@@ -44,7 +44,7 @@ fn main() {
     file_names.executable = config.executable_name;
 
     //Get user arguments
-    let args = args::MakeWizArgs::parse();
+    let args = cli::CLI::parse();
 
     // Check if both subcommand and flags are provided
     if args.subcommands_provided() && args.flags_provided() {
