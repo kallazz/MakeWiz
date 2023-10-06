@@ -1,5 +1,5 @@
 use makewiz::cli;
-use makewiz::build_config;
+use makewiz::build_data;
 
 mod test {
     use super::*;
@@ -11,7 +11,7 @@ mod test {
     fn makefile_creation() {
         let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
-        let mut file_names = build_config::ProjectBuildConfig::extract_names(paths_to_files).unwrap();
+        let mut file_names = build_data::BuildData::extract_names(paths_to_files, &[".c", ".cpp", ".h", ".hpp"]).unwrap();
 
         let args = vec![String::from("target/debug/makewiz"), String::from("-e"),
             String::from("executable"), String::from("-c"), String::from("compiler"), 

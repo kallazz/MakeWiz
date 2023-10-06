@@ -12,11 +12,20 @@ _makewiz() {
             ",$1")
                 cmd="makewiz"
                 ;;
+            makewiz,c)
+                cmd="makewiz__c"
+                ;;
+            makewiz,cpp)
+                cmd="makewiz__cpp"
+                ;;
             makewiz,default)
                 cmd="makewiz__default"
                 ;;
             makewiz,help)
                 cmd="makewiz__help"
+                ;;
+            makewiz,java)
+                cmd="makewiz__java"
                 ;;
             makewiz,set-compiler)
                 cmd="makewiz__set__compiler"
@@ -24,11 +33,20 @@ _makewiz() {
             makewiz,set-executable)
                 cmd="makewiz__set__executable"
                 ;;
+            makewiz__help,c)
+                cmd="makewiz__help__c"
+                ;;
+            makewiz__help,cpp)
+                cmd="makewiz__help__cpp"
+                ;;
             makewiz__help,default)
                 cmd="makewiz__help__default"
                 ;;
             makewiz__help,help)
                 cmd="makewiz__help__help"
+                ;;
+            makewiz__help,java)
+                cmd="makewiz__help__java"
                 ;;
             makewiz__help,set-compiler)
                 cmd="makewiz__help__set__compiler"
@@ -43,7 +61,7 @@ _makewiz() {
 
     case "${cmd}" in
         makewiz)
-            opts="-c -e -m -t -r -h -V --compiler --executable --math --thread --crypto --cunit --cppunit --help --version set-compiler set-executable default help"
+            opts="-c -e -m -t -r -h -V --compiler --executable --math --thread --crypto --cunit --cppunit --help --version c cpp java set-compiler set-executable default help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -72,6 +90,34 @@ _makewiz() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        makewiz__c)
+            opts="-h --help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        makewiz__cpp)
+            opts="-h --help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         makewiz__default)
             opts="-h --help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
@@ -87,8 +133,36 @@ _makewiz() {
             return 0
             ;;
         makewiz__help)
-            opts="set-compiler set-executable default help"
+            opts="c cpp java set-compiler set-executable default help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        makewiz__help__c)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        makewiz__help__cpp)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -128,6 +202,20 @@ _makewiz() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        makewiz__help__java)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         makewiz__help__set__compiler)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
@@ -145,6 +233,20 @@ _makewiz() {
         makewiz__help__set__executable)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        makewiz__java)
+            opts="-h --help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
