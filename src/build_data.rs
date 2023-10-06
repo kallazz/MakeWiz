@@ -1,4 +1,4 @@
-//! This module handles data required for generating a Makefile.
+//! Handles data required for generating a Makefile.
 //!
 //! It extracts appropriate file names and categorizes them as source files or header files. 
 //! It also generates output file names for source files (.o for C/C++ and .class for Java).
@@ -124,11 +124,11 @@ impl FileType {
             Some(ext) => {
                 let ext = &ext.to_str().unwrap();
 
-                if SOURCE_EXTENSIONS.contains(ext) { return FileType::Source }
-                else if HEADER_EXTENSIONS.contains(ext) { return FileType::Header }
-                else { return FileType::Other }
+                if SOURCE_EXTENSIONS.contains(ext) { FileType::Source }
+                else if HEADER_EXTENSIONS.contains(ext) { FileType::Header }
+                else { FileType::Other }
             },
-            None => return FileType::Other
+            None => FileType::Other
         }
     }
 }

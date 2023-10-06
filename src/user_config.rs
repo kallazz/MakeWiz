@@ -1,10 +1,13 @@
-// Handles everything related to the user config file.
-//
-// The user config file holds default values for the C/C++ compiler and executable name in TOML format.
-// Users can set these values to avoid specifying them every time they use MakeWiz.
-// If the user doesn't choose custom default values, they will be set to:
-// - Compiler: g++
-// - Executable name: main
+//! Manages the user configuration for MakeWiz.
+//!
+//! The user config file, stored in TOML format, holds default values for the C/C++ compiler
+//! and executable name. Users can set these values to avoid specifying them every time they
+//! use MakeWiz. If no custom defaults are chosen, they will be set to:
+//!
+//! - Compiler: g++
+//! - Executable name: main
+//!
+//! This module provides functions for reading, updating, and printing the user configuration.
 
 use serde::{Serialize, Deserialize};
 use std::fs::File;

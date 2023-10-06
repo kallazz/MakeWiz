@@ -1,4 +1,6 @@
-//#![doc = include_str!("../README.md")]
+//! MakeWiz is a command line tool that generates a Makefile based on the files in your directory.
+//!
+//! Makefiles can be generated for C, C++ and Java.
 
 pub mod cli;
 pub mod build_data;
@@ -7,10 +9,12 @@ pub mod user_config;
 use std::fmt;
 use crate::build_data::BuildData;
 
+/// Represents a vector of strings.
 #[derive(PartialEq, Debug)]
 pub struct StringVector(Vec<String>);
 
 impl StringVector {
+    /// Creates a new empty `StringVector`.
     pub fn new() -> StringVector {
         StringVector(Vec::new())
     }
@@ -23,6 +27,15 @@ impl fmt::Display for StringVector {
     }
 }
 
+/// Generates a Makefile for a C/C++ project based on the provided `BuildData`.
+///
+/// # Arguments
+///
+/// * `file_names` - A `BuildData` struct containing file names and compiler options.
+///
+/// # Returns
+///
+/// A `String` containing the generated Makefile.
 pub fn generate_makefile(file_names: &BuildData) -> String {
     let makefile = format!("\
 # Compiler and flags
@@ -60,6 +73,15 @@ file_names.ldlibs);
     makefile
 }
 
+/// Generates a Makefile for a Java project based on the provided `BuildData`.
+///
+/// # Arguments
+///
+/// * `file_names` - A `BuildData` struct containing relevant file names.
+///
+/// # Returns
+///
+/// A `String` containing the generated Makefile.
 pub fn generate_java_makefile(file_names: &BuildData) -> String {
     let makefile = format!("\
 # Compiler and flags
