@@ -14,10 +14,10 @@ edition = "2021"
 exclude = [
     "/test-dirs",
 ]
-default-run = "default"
+default-run = "makewiz"
 
 [[bin]]
-name = "default"
+name = "makewiz"
 path = "src/main.rs"
 
 [[bin]]
