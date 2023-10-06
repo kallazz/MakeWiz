@@ -1,4 +1,4 @@
-#![doc = include_str!("../README.md")]
+//#![doc = include_str!("../README.md")]
 
 pub mod cli;
 pub mod build_data;

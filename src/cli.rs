@@ -46,12 +46,6 @@ pub struct CLI {
 /// Represents the available commands for the MakeWiz CLI.
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Generate a C Makefile
-    C,
-
-    /// Generate a C++ Makefile
-    Cpp,
-
     /// Generate a Java Makefile
     Java,
 

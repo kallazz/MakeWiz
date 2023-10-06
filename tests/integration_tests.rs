@@ -11,7 +11,7 @@ mod test {
     fn makefile_creation() {
         let paths_to_files = fs::read_dir("./test-dirs/test-makefile-creation").unwrap();
 
-        let mut file_names = build_data::BuildData::extract_names(paths_to_files, &[".c", ".cpp", ".h", ".hpp"]).unwrap();
+        let mut file_names = build_data::BuildData::extract_names(paths_to_files).unwrap();
 
         let args = vec![String::from("target/debug/makewiz"), String::from("-e"),
             String::from("executable"), String::from("-c"), String::from("compiler"), 
@@ -61,5 +61,33 @@ $(OUT): $(OBJS)
 clean:
 \trm -f $(OBJS) $(OUT)\n";
         assert_eq!(expected, makewiz::generate_makefile(&file_names));
+    }
+
+    #[test]
+    fn java_makefile_creation() {
+        let paths_to_files = fs::read_dir("./test-dirs/test-java-makefile-creation").unwrap();
+
+        let file_names = build_data::BuildData::extract_names(paths_to_files).unwrap();
+
+        let expected = "\
+# Compiler and flags
+JC = javac
+JFLAGS = -g
+
+# Source files and compiled classes
+SOURCE = FirstClass.java SecondClass.java
+CLASSES = FirstClass.class SecondClass.class
+
+# Default target
+default: $(CLASSES)
+
+# Compilation rule
+%.class: %.java
+\t$(JC) $(JFLAGS) $<
+
+# Clean rule to remove generated .class files
+clean:
+\trm -f $(CLASSES)\n";
+        assert_eq!(expected, makewiz::generate_java_makefile(&file_names));
     }
 }

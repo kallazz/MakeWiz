@@ -6,7 +6,7 @@
 use std::fs;
 use crate::StringVector;
 
-const SOURCE_EXTENSIONS: [&str; 2] = ["c", "cpp"]; 
+const SOURCE_EXTENSIONS: [&str; 3] = ["c", "cpp", "java"]; 
 const HEADER_EXTENSIONS: [&str; 2] = ["h", "hpp"]; 
 
 /// A struct that holds data for generating a Makefile.
@@ -67,7 +67,7 @@ impl BuildData {
             }
             else {
                 new_file.truncate(name_len - 5);
-                new_file.push_str(".java");
+                new_file.push_str(".class");
             }
 
             output_files.push(new_file);
@@ -87,12 +87,12 @@ impl BuildData {
     /// # Returns
     ///
     /// A `Result` containing the extracted `BuildData` or an error.
-    pub fn extract_names(paths: fs::ReadDir, allowed_extensions: &[&str]) -> Result<BuildData, Box<dyn std::error::Error>> {
+    pub fn extract_names(paths: fs::ReadDir) -> Result<BuildData, Box<dyn std::error::Error>> {
         let mut files = BuildData::new();
 
         for path_result in paths {
             let path = path_result?;
-            let extension = FileType::get_extension_type(&path, &allowed_extensions);
+            let extension = FileType::get_extension_type(&path);
             let name = path.path().file_name().unwrap().to_str().unwrap().to_string();
 
             match extension {
@@ -116,15 +116,13 @@ enum FileType {
 }
 
 impl FileType {
-    fn get_extension_type(file_name: &fs::DirEntry, allowed_extensions: &[&str]) -> FileType {
+    fn get_extension_type(file_name: &fs::DirEntry) -> FileType {
         let path = file_name.path();
         let extension = path.extension();
 
         match extension {
             Some(ext) => {
                 let ext = &ext.to_str().unwrap();
-
-                if !allowed_extensions.contains(ext) { return FileType::Other }
 
                 if SOURCE_EXTENSIONS.contains(ext) { return FileType::Source }
                 else if HEADER_EXTENSIONS.contains(ext) { return FileType::Header }
@@ -143,7 +141,7 @@ mod test {
     fn extract_names_no_correct_files() {
         let paths = fs::read_dir("./test-dirs/test-extracting-filenames/no-correct-files").unwrap();
         let expected = BuildData::new();
-        let result = BuildData::extract_names(paths, &[".c", ".cpp", ".h", ".hpp"]).unwrap();
+        let result = BuildData::extract_names(paths).unwrap();
 
         assert_eq!(expected, result);
     }
@@ -160,7 +158,7 @@ mod test {
             lflags: String::new(),
             ldlibs: String::new(),
         };
-        let result = BuildData::extract_names(paths, &[".c", ".cpp", ".h", ".hpp"]).unwrap();
+        let result = BuildData::extract_names(paths).unwrap();
 
         assert_eq!(expected, result);
     }
@@ -177,7 +175,7 @@ mod test {
             lflags: String::new(),
             ldlibs: String::new(),
         };
-        let result = BuildData::extract_names(paths, &[".c", ".cpp", ".h", ".hpp"]).unwrap();
+        let result = BuildData::extract_names(paths).unwrap();
 
         assert_eq!(expected, result);
     }
