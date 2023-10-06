@@ -40,19 +40,7 @@ _makewiz() {
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:makewiz-command-$line[1]:"
         case $line[1] in
-            (c)
-_arguments "${_arguments_options[@]}" \
-'-h[Print help]' \
-'--help[Print help]' \
-&& ret=0
-;;
-(cpp)
-_arguments "${_arguments_options[@]}" \
-'-h[Print help]' \
-'--help[Print help]' \
-&& ret=0
-;;
-(java)
+            (java)
 _arguments "${_arguments_options[@]}" \
 '-h[Print help]' \
 '--help[Print help]' \
@@ -90,15 +78,7 @@ _arguments "${_arguments_options[@]}" \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:makewiz-help-command-$line[1]:"
         case $line[1] in
-            (c)
-_arguments "${_arguments_options[@]}" \
-&& ret=0
-;;
-(cpp)
-_arguments "${_arguments_options[@]}" \
-&& ret=0
-;;
-(java)
+            (java)
 _arguments "${_arguments_options[@]}" \
 && ret=0
 ;;
@@ -130,8 +110,6 @@ esac
 (( $+functions[_makewiz_commands] )) ||
 _makewiz_commands() {
     local commands; commands=(
-'c:Generate a C Makefile' \
-'cpp:Generate a C++ Makefile' \
 'java:Generate a Java Makefile' \
 'set-compiler:Set the default compiler name' \
 'set-executable:Set the default executable name' \
@@ -139,26 +117,6 @@ _makewiz_commands() {
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'makewiz commands' commands "$@"
-}
-(( $+functions[_makewiz__c_commands] )) ||
-_makewiz__c_commands() {
-    local commands; commands=()
-    _describe -t commands 'makewiz c commands' commands "$@"
-}
-(( $+functions[_makewiz__help__c_commands] )) ||
-_makewiz__help__c_commands() {
-    local commands; commands=()
-    _describe -t commands 'makewiz help c commands' commands "$@"
-}
-(( $+functions[_makewiz__cpp_commands] )) ||
-_makewiz__cpp_commands() {
-    local commands; commands=()
-    _describe -t commands 'makewiz cpp commands' commands "$@"
-}
-(( $+functions[_makewiz__help__cpp_commands] )) ||
-_makewiz__help__cpp_commands() {
-    local commands; commands=()
-    _describe -t commands 'makewiz help cpp commands' commands "$@"
 }
 (( $+functions[_makewiz__default_commands] )) ||
 _makewiz__default_commands() {
@@ -173,8 +131,6 @@ _makewiz__help__default_commands() {
 (( $+functions[_makewiz__help_commands] )) ||
 _makewiz__help_commands() {
     local commands; commands=(
-'c:Generate a C Makefile' \
-'cpp:Generate a C++ Makefile' \
 'java:Generate a Java Makefile' \
 'set-compiler:Set the default compiler name' \
 'set-executable:Set the default executable name' \

@@ -1,7 +1,7 @@
 //! This module is responsible for generating autocompletions for the MakeWiz CLI.
 //!
 //! It generates autocompletion scripts for Bash, Fish, and Zsh. 
-//! The generated autocompletion scripts are placed in the `completions/` directory
+//! The generated autocompletion scripts are placed in the `autocompletion_scripts/` directory
 //! within the crate's cargo manifest directory.
 //! 
 //! To generate the scripts, run `cargo run --bin generate_completions`.
@@ -14,12 +14,10 @@ use std::io::Error;
 
 use makewiz::cli::CLI;
 
-#[allow(dead_code)]
 const SHELLS: [Shell; 3] = [Shell::Bash, Shell::Fish, Shell::Zsh];
 
-#[allow(dead_code)]
 fn generate_autocompletions() -> Result<(), Error> {
-    let outdir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("completions/");
+    let outdir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("autocompletion_scripts/");
 
     let mut cmd = CLI::command();
     for shell in SHELLS {
