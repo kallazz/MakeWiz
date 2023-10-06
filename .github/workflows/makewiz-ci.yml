@@ -29,7 +29,7 @@ jobs:
           path: target/debug/makewiz
 
   test_binary:
-    name: Test MakeWiz Binary with Make
+    name: Test MakeWiz binary with make
     runs-on: ubuntu-latest
     needs: build_and_test
     steps:
@@ -43,6 +43,7 @@ jobs:
           chmod +x makewiz
           cp makewiz ci/c-test
           cp makewiz ci/cpp-test
+          cp makewiz ci/java-test
 
       - name: Test C with -lm
         run: |
@@ -55,5 +56,12 @@ jobs:
         run: |
           cd ci/cpp-test
           ./makewiz -c g++
+          make
+          ./main
+
+      - name: Test Java
+        run: |
+          cd ci/java-test
+          ./makewiz java
           make
           ./main
