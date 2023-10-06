@@ -64,4 +64,4 @@ jobs:
           cd ci/java-test
           ./makewiz java
           make
-          ./main
+          java HelloWorld
