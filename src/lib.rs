@@ -1,6 +1,10 @@
 //! MakeWiz is a command line tool that generates a Makefile based on the files in your directory.
 //!
-//! Makefiles can be generated for C, C++ and Java.
+//! Run `makewiz` to generate a Makefile for your C/C++ project.
+//!
+//! Run `makewiz java` to generate a Makefile for your Java project.
+//!
+//! For a more detailed usage guide and installation guide, visit [MakeWiz's GitHub page](https://github.com/kallazz/MakeWiz).
 
 pub mod cli;
 pub mod build_data;

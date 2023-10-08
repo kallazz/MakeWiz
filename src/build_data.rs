@@ -108,6 +108,7 @@ impl BuildData {
         Ok(files)
     }
 
+    /// Get Java source files (.java) from the `source_files` collection.
     pub fn get_java_source_files(&self) -> StringVector {
         let mut java_source_files = StringVector::new();
 
@@ -120,6 +121,7 @@ impl BuildData {
         java_source_files
     }
 
+    /// Get Java compiled files (.class) from the `compiled_files` collection.
     pub fn get_java_compiled_files(&self) -> StringVector {
         let mut java_compiled_files = StringVector::new();
 
@@ -132,6 +134,7 @@ impl BuildData {
         java_compiled_files
     }
 
+    /// Get C/C++ source files (.c, .cpp) from the `source_files` collection.
     pub fn get_cpp_source_files(&self) -> StringVector {
         let mut cpp_source_files = StringVector::new();
 
@@ -145,6 +148,7 @@ impl BuildData {
         cpp_source_files
     }
 
+    /// Get C/C++ compiled files (.o) from the `compiled_files` collection.
     pub fn get_cpp_compiled_files(&self) -> StringVector {
         let mut cpp_compiled_files = StringVector::new();
 

@@ -1,4 +1,4 @@
-//! Manages the user configuration for MakeWiz.
+//! Manages the user config file.
 //!
 //! The user config file, stored in TOML format, holds default values for the C/C++ compiler
 //! and executable name. Users can set these values to avoid specifying them every time they
