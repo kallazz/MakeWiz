@@ -14,11 +14,11 @@ pub struct CLI {
     #[command(subcommand)]
     pub command: Option<Commands>,
 
-    /// Set the compiler name for this Makefile
+    /// Set the C/C++ compiler name for this Makefile
     #[arg(short, long, value_name = "COMPILER_NAME")]
     pub compiler: Option<String>,
 
-    /// Set the executable name for this Makefile
+    /// Set the C/C++ executable name for this Makefile
     #[arg(short, long, value_name = "EXECUTABLE_NAME")]
     pub executable: Option<String>,
 
@@ -49,10 +49,10 @@ pub enum Commands {
     /// Generate a Java Makefile
     Java,
 
-    /// Set the default compiler name
+    /// Set the default C/C++ compiler name
     SetCompiler(NameArgument),
 
-    /// Set the default executable name
+    /// Set the default C/C++ executable name
     SetExecutable(NameArgument),
 
     /// Show default values
