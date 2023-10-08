@@ -42,3 +42,8 @@ buildflags = ["--release"]
 
 [package.metadata.rpm.targets]
 makewiz = { path = "/usr/bin/makewiz" }
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/makewiz", dest = "/usr/bin/makewiz", mode = "755" }
+]
