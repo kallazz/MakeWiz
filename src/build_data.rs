@@ -231,4 +231,48 @@ mod test {
 
         assert_eq!(expected, result);
     }
+
+    #[test]
+    fn get_cpp_extensions() {
+        let data = BuildData {
+            compiler: String::new(),
+            executable: String::new(),
+            header_files: StringVector::new(),
+            compiled_files: StringVector(vec![String::from("c_file.o"), String::from("cpp_file.o"), String::from("java_file.class")]),
+            source_files: StringVector(vec![String::from("c_file.c"), String::from("cpp_file.cpp"), String::from("java_file.java")]),
+            lflags: String::new(),
+            ldlibs: String::new(),
+        };
+
+        let expected_source = StringVector(vec![String::from("c_file.c"), String::from("cpp_file.cpp")]);
+        let expected_compiled = StringVector(vec![String::from("c_file.o"), String::from("cpp_file.o")]);
+
+        let source_result = data.get_cpp_source_files();
+        let compiled_result = data.get_cpp_compiled_files();
+
+        assert_eq!(expected_source, source_result);
+        assert_eq!(expected_compiled, compiled_result);
+    }
+
+    #[test]
+    fn get_java_extensions() {
+        let data = BuildData {
+            compiler: String::new(),
+            executable: String::new(),
+            header_files: StringVector::new(),
+            compiled_files: StringVector(vec![String::from("c_file.o"), String::from("cpp_file.o"), String::from("java_file.class")]),
+            source_files: StringVector(vec![String::from("c_file.c"), String::from("cpp_file.cpp"), String::from("java_file.java")]),
+            lflags: String::new(),
+            ldlibs: String::new(),
+        };
+
+        let expected_source = StringVector(vec![String::from("java_file.java")]);
+        let expected_compiled = StringVector(vec![String::from("java_file.class")]);
+
+        let source_result = data.get_java_source_files();
+        let compiled_result = data.get_java_compiled_files();
+
+        assert_eq!(expected_source, source_result);
+        assert_eq!(expected_compiled, compiled_result);
+    }
 }
