@@ -1,5 +1,5 @@
-complete -c makewiz -n "__fish_use_subcommand" -s c -l compiler -d 'Set the compiler name for this Makefile' -r
-complete -c makewiz -n "__fish_use_subcommand" -s e -l executable -d 'Set the executable name for this Makefile' -r
+complete -c makewiz -n "__fish_use_subcommand" -s c -l compiler -d 'Set the C/C++ compiler name for this Makefile' -r
+complete -c makewiz -n "__fish_use_subcommand" -s e -l executable -d 'Set the C/C++ executable name for this Makefile' -r
 complete -c makewiz -n "__fish_use_subcommand" -s m -l math -d 'Add the math library(-lm) to this Makefile'
 complete -c makewiz -n "__fish_use_subcommand" -s t -l thread -d 'Add the thread library(-lpthread) to this Makefile'
 complete -c makewiz -n "__fish_use_subcommand" -s r -l crypto -d 'Add the crypto library(-lcrypto) to this Makefile'
@@ -8,8 +8,8 @@ complete -c makewiz -n "__fish_use_subcommand" -l cppunit -d 'Add the CPPUnit li
 complete -c makewiz -n "__fish_use_subcommand" -s h -l help -d 'Print help'
 complete -c makewiz -n "__fish_use_subcommand" -s V -l version -d 'Print version'
 complete -c makewiz -n "__fish_use_subcommand" -f -a "java" -d 'Generate a Java Makefile'
-complete -c makewiz -n "__fish_use_subcommand" -f -a "set-compiler" -d 'Set the default compiler name'
-complete -c makewiz -n "__fish_use_subcommand" -f -a "set-executable" -d 'Set the default executable name'
+complete -c makewiz -n "__fish_use_subcommand" -f -a "set-compiler" -d 'Set the default C/C++ compiler name'
+complete -c makewiz -n "__fish_use_subcommand" -f -a "set-executable" -d 'Set the default C/C++ executable name'
 complete -c makewiz -n "__fish_use_subcommand" -f -a "default" -d 'Show default values'
 complete -c makewiz -n "__fish_use_subcommand" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c makewiz -n "__fish_seen_subcommand_from java" -s h -l help -d 'Print help'
@@ -17,7 +17,7 @@ complete -c makewiz -n "__fish_seen_subcommand_from set-compiler" -s h -l help -
 complete -c makewiz -n "__fish_seen_subcommand_from set-executable" -s h -l help -d 'Print help'
 complete -c makewiz -n "__fish_seen_subcommand_from default" -s h -l help -d 'Print help'
 complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "java" -d 'Generate a Java Makefile'
-complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "set-compiler" -d 'Set the default compiler name'
-complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "set-executable" -d 'Set the default executable name'
+complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "set-compiler" -d 'Set the default C/C++ compiler name'
+complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "set-executable" -d 'Set the default C/C++ executable name'
 complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "default" -d 'Show default values'
 complete -c makewiz -n "__fish_seen_subcommand_from help; and not __fish_seen_subcommand_from java; and not __fish_seen_subcommand_from set-compiler; and not __fish_seen_subcommand_from set-executable; and not __fish_seen_subcommand_from default; and not __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
