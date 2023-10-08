@@ -57,11 +57,11 @@ impl BuildData {
             let mut new_file = source_file.clone();
             let name_len = source_file.len();
 
-            if &source_file[name_len - 2..] == ".c" {
+            if get_extension(&source_file) == "c" {
                 new_file.truncate(name_len - 2);
                 new_file.push_str(".o");
             }
-            else if &source_file[name_len - 4..] == ".cpp" {
+            else if get_extension(&source_file) == "cpp" {
                 new_file.truncate(name_len - 4);
                 new_file.push_str(".o");
             }
@@ -92,8 +92,8 @@ impl BuildData {
 
         for path_result in paths {
             let path = path_result?;
-            let extension = FileType::get_extension_type(&path);
             let name = path.path().file_name().unwrap().to_str().unwrap().to_string();
+            let extension = FileType::get_extension_type(&name);
 
             match extension {
                 FileType::Source => files.source_files.0.push(name),
@@ -107,6 +107,66 @@ impl BuildData {
         files.generate_compiled_files();
         Ok(files)
     }
+
+    pub fn get_java_source_files(&self) -> StringVector {
+        let mut java_source_files = StringVector::new();
+
+        for file in self.source_files.0.iter() {
+            if get_extension(file) == "java" {
+                java_source_files.0.push(file.clone())
+            }
+        }
+
+        java_source_files
+    }
+
+    pub fn get_java_compiled_files(&self) -> StringVector {
+        let mut java_compiled_files = StringVector::new();
+
+        for file in self.compiled_files.0.iter() {
+            if get_extension(file) == "class" {
+                java_compiled_files.0.push(file.clone())
+            }
+        }
+
+        java_compiled_files
+    }
+
+    pub fn get_cpp_source_files(&self) -> StringVector {
+        let mut cpp_source_files = StringVector::new();
+
+        for file in self.source_files.0.iter() {
+            let extension = get_extension(file);
+            if extension == "c" || extension == "cpp" {
+                cpp_source_files.0.push(file.clone())
+            }
+        }
+
+        cpp_source_files
+    }
+
+    pub fn get_cpp_compiled_files(&self) -> StringVector {
+        let mut cpp_compiled_files = StringVector::new();
+
+        for file in self.compiled_files.0.iter() {
+            if get_extension(file) == "o" {
+                cpp_compiled_files.0.push(file.clone())
+            }
+        }
+
+        cpp_compiled_files
+    }
+}
+
+fn get_extension(file_name: &str) -> &str {
+    match file_name.rfind('.') {
+        Some(index) => {
+            let extension = &file_name[index + 1..];
+
+            extension
+        }
+        None => "",
+    }
 }
 
 enum FileType {
@@ -116,20 +176,12 @@ enum FileType {
 }
 
 impl FileType {
-    fn get_extension_type(file_name: &fs::DirEntry) -> FileType {
-        let path = file_name.path();
-        let extension = path.extension();
+    fn get_extension_type(file_name: &str) -> FileType {
+        let extension = get_extension(file_name);
 
-        match extension {
-            Some(ext) => {
-                let ext = &ext.to_str().unwrap();
-
-                if SOURCE_EXTENSIONS.contains(ext) { FileType::Source }
-                else if HEADER_EXTENSIONS.contains(ext) { FileType::Header }
-                else { FileType::Other }
-            },
-            None => FileType::Other
-        }
+        if SOURCE_EXTENSIONS.contains(&extension) { FileType::Source }
+        else if HEADER_EXTENSIONS.contains(&extension) { FileType::Header }
+        else { FileType::Other }
     }
 }
 

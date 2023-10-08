@@ -7,6 +7,7 @@ pub mod build_data;
 pub mod user_config;
 
 use std::fmt;
+
 use crate::build_data::BuildData;
 
 /// Represents a vector of strings.
@@ -66,9 +67,9 @@ $(OUT): $(OBJS)
 # Clean rule
 clean:
 \trm -f $(OBJS) $(OUT)\n",
-file_names.compiler, file_names.lflags, file_names.compiled_files,
-file_names.source_files, file_names.header_files, file_names.executable,
-file_names.ldlibs);
+file_names.compiler, file_names.lflags,
+file_names.get_cpp_compiled_files(), file_names.get_cpp_source_files(),
+file_names.header_files, file_names.executable, file_names.ldlibs);
 
     makefile
 }
@@ -102,7 +103,7 @@ default: $(CLASSES)
 # Clean rule to remove generated .class files
 clean:
 \trm -f $(CLASSES)\n",
-file_names.source_files, file_names.compiled_files);
+file_names.get_java_source_files(), file_names.get_java_compiled_files());
 
     makefile
 }
