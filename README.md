@@ -1,7 +1,7 @@
 # MakeWiz
 MakeWiz is a handy command-line tool designed to make working with Makefiles easier.
-With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory. 
-It is available for all major Linux distros.
+With just one simple command, MakeWiz does the work of creating a neat Makefile that perfectly fits the files in your directory.
+It can generate Makefiles for C, C++ and Java. It is available for all major Linux distros.
 
 [![Build status](https://github.com/kallazz/MakeWiz/actions/workflows/makewiz-ci.yml/badge.svg)](https://github.com/kallazz/MakeWiz/actions)
 [![Crates.io](https://img.shields.io/crates/v/makewiz.svg)](https://crates.io/crates/makewiz)
@@ -25,7 +25,7 @@ Let's say that you have a directory with such files
 * `Vehicle.hpp`
 * `main.cpp` and executable `main`
 
-After running `makewiz`, a Makefile like this will be created
+After running `makewiz`(for Java projects use `makewiz java`), a Makefile like this will be created
 
 ```Makefile
 # Compiler and flags
@@ -75,16 +75,16 @@ yay -S makewiz
 If you are a **Debian** user(or any other Debian-based distros like **Ubuntu**), you can install MakeWiz using a `.deb` file:
 
 ```
-sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz_0.7.0_amd64.deb
-sudo dpkg -i makewiz_0.7.0_amd64.deb
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.8.0/makewiz_0.8.0_amd64.deb
+sudo dpkg -i makewiz_0.8.0_amd64.deb
 ```
 
 ### RedHat/Fedora
 If you are using a **RedHat-based Linux distribution** like **Fedora** or **CentOS**, you can install MakeWiz using a **.rpm** file:
 
 ```
-sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz-0.7.0-1.x86_64.rpm
-sudo rpm -i makewiz-0.7.0-1.x86_64.rpm
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.8.0/makewiz-0.8.0-1.x86_64.rpm
+sudo rpm -i makewiz-0.8.0-1.x86_64.rpm
 ```
 
 ### Cargo
@@ -105,18 +105,18 @@ You can also download them using these commands:
 
 **Bash:**
 ```
-sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.bash
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.8.0/makewiz.bash
 ```
 
 **Fish:**
 ```
-sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/makewiz.fish
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.8.0/makewiz.fish
 ```
 
 
 **Zsh:**
 ```
-sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.7.0/_makewiz
+sudo curl -LO https://github.com/kallazz/MakeWiz/releases/download/v0.8.0/_makewiz
 ```
 
 After downloading the script for your preferred shell, follow these steps to enable auto-completion:
@@ -134,9 +134,9 @@ After opening a new Terminal window, everything should work smoothly.
 
 
 ## 📖User Guide
-To generate a Makefile using MakeWiz, simply enter the command `makewiz` in your terminal.
+To generate a Makefile using MakeWiz, simply enter the command `makewiz` in your terminal for C/C++ projects. For Java projects enter `makewiz java`.
 
-By default, MakeWiz will create a Makefile with the executable name *main* and compiler *g++*. You can change this behaviour by using commands and options listed below. If you are not sure what your default compiler and executable values are, you can just run `makewiz default`.
+By default, for C/C++ MakeWiz will create a Makefile with the executable name *main* and compiler *g++*. You can change this behaviour by using commands and options listed below. If you are not sure what your default compiler and executable values are, you can just run `makewiz default`.
 
 ```
 MakeWiz is a command line tool that generates a Makefile based on the files in your directory
@@ -144,14 +144,15 @@ MakeWiz is a command line tool that generates a Makefile based on the files in y
 Usage: makewiz [OPTIONS] [COMMAND]
 
 Commands:
-  set-compiler    Set the default compiler name
-  set-executable  Set the default executable name
+  java            Generate a Java Makefile
+  set-compiler    Set the default C/C++ compiler name
+  set-executable  Set the default C/C++ executable name
   default         Show default values
   help            Print this message or the help of the given subcommand(s)
 
 Options:
-  -c, --compiler <COMPILER_NAME>      Set the compiler name for this Makefile
-  -e, --executable <EXECUTABLE_NAME>  Set the executable name for this Makefile
+  -c, --compiler <COMPILER_NAME>      Set the C/C++ compiler name for this Makefile
+  -e, --executable <EXECUTABLE_NAME>  Set the C/C++ executable name for this Makefile
   -m, --math                          Add the math library(-lm) to this Makefile
   -t, --thread                        Add the thread library(-lpthread) to this Makefile
   -r, --crypto                        Add the crypto library(-lcrypto) to this Makefile
